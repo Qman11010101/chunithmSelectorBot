@@ -1,0 +1,2 @@
+# chunithmSelectorBot
+CHUNITHMの曲をランダムに選ぶDiscord bot
