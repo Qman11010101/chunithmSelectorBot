@@ -14,6 +14,7 @@ pytz = "*"
 python_version = "3.8.6"
 
 [scripts]
+py = "python"
 start = "python main.py"
 pyver = "python --version"
 pip = "pip"
