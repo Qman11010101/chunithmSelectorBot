@@ -1,6 +1,7 @@
 import datetime
 import json
 import os
+import sys
 
 import pytz
 
@@ -11,7 +12,7 @@ if os.path.isfile("setting.json"):
     tz = setting["misc"]["timezone"]
 else:
     print("setting.jsonが見つかりません")
-    os.exit(1)
+    sys.exit(1)
 
 TIMEZONE = pytz.timezone(tz)
 
