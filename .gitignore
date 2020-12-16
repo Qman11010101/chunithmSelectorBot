@@ -140,3 +140,4 @@ cython_debug/
 .venv/*
 setting.json
 .vscode/
+api_log/
