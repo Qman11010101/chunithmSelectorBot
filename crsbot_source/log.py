@@ -10,15 +10,18 @@ if os.path.isfile("setting.json"):
         setting = json.load(s)
     
     tz = setting["misc"]["timezone"]
+    is_logging = setting["logging"]["logging"]
+    loglevel = setting["logging"]["loglevel"]
 else:
     print("setting.jsonが見つかりません")
     sys.exit(1)
+    # TODO: 環境変数読むか起動時に引数もらう
 
 TIMEZONE = pytz.timezone(tz)
 
-def logger(content, mode="Info"):
-    now = TIMEZONE.localize(datetime.datetime.now())
-    print(now)
+def logger(content, level=loglevel, module_name=os.path.basename(__file__)):
+    now_str = TIMEZONE.localize(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[{now_str}][{module_name}][{level}]: {content}")
 
 if __name__ == "__main__":
-    logger("あ")
+    logger("ロギングテスト")
