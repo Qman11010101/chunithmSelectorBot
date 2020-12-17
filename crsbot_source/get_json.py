@@ -38,3 +38,11 @@ def official(version):
     # with open(f"api_log/{region}.json", "w") as a:
     #     json.dump(json_data, a, ensure_ascii=False)
     # pass
+
+def official_test():
+    for i in [[URL_Domestic, "domestic"], [URL_International, "international"]]:
+        response = requests.get(i[0])
+        json_data = response.json()
+
+        with open(f"api_log/{i[1]}.json", "w", encoding="utf-8_sig") as a:
+            json.dump(json_data, a, ensure_ascii=False)
