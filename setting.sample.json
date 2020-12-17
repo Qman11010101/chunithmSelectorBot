@@ -1,11 +1,13 @@
 {
     "token": {
-        "discord": "Replace_Here",
-        "chunirec": "Replace_Here"
+        "discord": "REPLACE_HERE",
+        "chunirec": "REPLACE_HERE"
+    },
+    "logging": {
+        "logging": true,
+        "loglevel": "info"
     },
     "misc": {
-        "timezone": "Asia/Tokyo",
-        "logging": "true",
-        "loglevel": "debug"
+        "timezone": "Asia/Tokyo"
     }
 }
