@@ -13,7 +13,7 @@ if os.path.isfile("setting.json"):
     is_logging = setting["logging"]["logging"]
     loglevel = setting["logging"]["loglevel"]
 else:
-    print("setting.jsonが見つかりません") # TODO: loggerに置換
+    print("setting.jsonが見つかりません") # TODO: loggerに置換(critical)
     sys.exit(1)
     # TODO: 環境変数読むか起動時に引数もらう
 
