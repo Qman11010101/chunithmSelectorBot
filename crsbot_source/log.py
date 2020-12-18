@@ -20,6 +20,12 @@ else:
 TIMEZONE = pytz.timezone(tz)
 
 def logger(content, level=loglevel):
+    """ロギングを行います。
+
+    引数:
+        content(str): ログ出力する内容です。
+        level(str) :ログレベルです。デフォルトはsetting.jsonで指定したものです。
+    """
     now_str = TIMEZONE.localize(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{now_str}][{level}]: {content}")
 
