@@ -1,16 +1,34 @@
 import datetime
 import json
 import os
+import time
 
 import requests
+
+from .log import logger
 
 URL_International = "https://chunithm.sega.com/js/music/json/common.json"
 URL_Domestic = "https://chunithm.sega.jp/data/common.json"
 
-def is_json_not_exists_or_timeout(region):
-    NOT_EXISTS = not(os.path.isfile(f"{region}.json"))
-    TIMEOUT = True
+def is_json_not_exists_or_outdated(filename):
+    json_path = f"api_log/{filename}.json"
+    exists = os.path.isfile(json_path)
+    NOT_EXISTS = not exists
+    if exists:
+        if time.time() - os.path.getmtime(json_path) > 3600:
+            logger(f"{filename}.jsonは古くなっています")
+            OUTDATED = True
+    else:
+        logger(f"{filename}.jsonが存在していません")
+        OUTDATED = False
+    return NOT_EXISTS or OUTDATED
 
+def save_and_return_json(url, region):
+    response = requests.get(url)
+    data = response.json()
+    with open(f"api_log/{region}.json", "w") as a:
+        json.dump(data, a, ensure_ascii=False)
+    return data
 
 def official(region):
     """公式サイトから取得されたJSONファイルを取得します。
@@ -24,10 +42,16 @@ def official(region):
     """
     region = region.lower()
     if region not in ["domestic", "international"]:
-        region = "domestic"
-        # log.logger("不正な引数が渡されたため暫定的に国内版JSONを取得します", "error")
-    if is_json_not_exists_or_timeout(region):
-        pass
+        raise ValueError()
+    if is_json_not_exists_or_outdated(region):
+        if region == "international":
+            url = URL_International
+        else:
+            url = URL_Domestic
+        logger(f"{url}を{region}.jsonとして取得します")
+        json_data = save_and_return_json(url, region)
+    else:
+        logger(f"新しい{region}.jsonが存在しています")
     
 
     # json_data = response.json()

@@ -13,7 +13,7 @@ if os.path.isfile("setting.json"):
     is_logging = setting["logging"]["logging"]
     loglevel = setting["logging"]["loglevel"]
 else:
-    print("setting.jsonが見つかりません") # TODO: loggerに置換(critical)
+    logger("setting.jsonが見つかりませんでした", "critical")
     sys.exit(1)
     # TODO: 環境変数読むか起動時に引数もらう
 
@@ -25,6 +25,12 @@ def logger(content, level=loglevel):
     引数:
         content(str): ログ出力する内容です。
         level(str) :ログレベルです。デフォルトはsetting.jsonで指定したものです。
+                    任意のレベルが指定できますが、基本的には以下の5つのうちどれかを指定します。
+                    - debug
+                    - info
+                    - warning
+                    - error
+                    - critical
     """
     now_str = TIMEZONE.localize(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
     print(f"[{now_str}][{level}]: {content}")
