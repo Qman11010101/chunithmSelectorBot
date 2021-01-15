@@ -12,21 +12,22 @@ URL_Domestic = "https://chunithm.sega.jp/data/common.json"
 
 def is_json_not_exists_or_outdated(filename):
     json_path = f"api_log/{filename}.json"
+    os.makedirs("api_log", exist_ok=True)
     exists = os.path.isfile(json_path)
     NOT_EXISTS = not exists
+    OUTDATED = False
     if exists:
         if time.time() - os.path.getmtime(json_path) > 3600:
             logger(f"{filename}.jsonは古くなっています")
             OUTDATED = True
     else:
         logger(f"{filename}.jsonが存在していません")
-        OUTDATED = False
     return NOT_EXISTS or OUTDATED
 
 def save_and_return_json(url, region):
     response = requests.get(url)
     data = response.json()
-    with open(f"api_log/{region}.json", "w") as a:
+    with open(f"api_log/{region}.json", "w", encoding="UTF-8_sig") as a:
         json.dump(data, a, ensure_ascii=False)
     return data
 
@@ -52,6 +53,11 @@ def official(region):
         json_data = save_and_return_json(url, region)
     else:
         logger(f"新しい{region}.jsonが存在しています")
+        with open(f"api_log/{region}.json", "r", encoding="UTF-8_sig") as a:
+            json_data = json.load(a)
+        
+    return json_data
+
     
 
     # json_data = response.json()
