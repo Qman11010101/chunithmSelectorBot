@@ -141,3 +141,4 @@ cython_debug/
 setting.json
 .vscode/
 api_log/
+test.py
