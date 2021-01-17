@@ -10,7 +10,9 @@ with open("setting.json") as s:
 
 tz = setting["misc"]["timezone"]
 is_logging = setting["logging"]["logging"]
-loglevel = setting["logging"]["loglevel"]
+loglevel_stdio = setting["logging"]["loglevel_stdio"]
+loglevel_file = setting["logging"]["loglevel_file"]
+log_filename = setting["logging"]["log_filename"]
 
 TIMEZONE = pytz.timezone(tz)
 loglv_list = {
@@ -20,9 +22,12 @@ loglv_list = {
     "error": 3,
     "critical": 4
 }
+log_stdio_int = loglv_list[loglevel_stdio]
+log_file_int = loglv_list[loglevel_file]
 
-def logger(content, level=loglevel):
+def logger(content, level="info"):
     """ロギングを行います。\n
+    標準出力とファイルへの出力
     \n
     引数:\n
         content(str): ログ出力する内容です。
@@ -39,8 +44,16 @@ def logger(content, level=loglevel):
     if level not in ["debug", "info", "warning", "error", "critical"]:
         level = "info"
     level_int = loglv_list[level]
-    now_str = TIMEZONE.localize(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
-    print(f"[{now_str}][{level}]: {content}")
 
-if __name__ == "__main__":
-    logger("ロギングテスト", "debug")
+    now_str = TIMEZONE.localize(datetime.datetime.now()).strftime("%Y-%m-%d %H:%M:%S")
+
+    log_content = f"[{now_str}][{level}]: {content}"
+
+    # ログ(標準出力)
+    if level_int >= log_stdio_int:
+        print(log_content)
+    
+    # ログ(ファイル)
+    if level_int >= log_file_int:
+        with open(log_filename, "a", encoding="UTF-8_sig") as log:
+            log.write(log_content + "\n")
