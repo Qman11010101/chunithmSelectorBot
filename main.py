@@ -14,7 +14,7 @@ if os.path.isfile("setting.json"):
     sys.exit(1)
 
 logger("chunirec tokenのテストを行います", "debug")
-test_status = token_test.test()
+test_status = token_test.test_chunirec()
 if test_status != 200:
     if test_status == 429:
         logger("tokenのリクエスト過多により、一時的に使用できなくなっています", "critical")
