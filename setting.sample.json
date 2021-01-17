@@ -5,9 +5,12 @@
     },
     "logging": {
         "logging": true,
-        "loglevel": "info"
+        "loglevel_stdio": "debug",
+        "loglevel_file": "debug"
     },
     "misc": {
-        "timezone": "Asia/Tokyo"
+        "channel_id": "REPLACE_HERE_INT",
+        "timezone": "Asia/Tokyo",
+        "api_lifetime": 3600
     }
 }

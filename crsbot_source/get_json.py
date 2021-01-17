@@ -9,10 +9,16 @@ from .log import logger
 
 URL_International = "https://chunithm.sega.com/js/music/json/common.json"
 URL_Domestic = "https://chunithm.sega.jp/data/common.json"
+URL_chunirec = "https://api.chunirec.net/1.3/music/showall.json"
+
+with open("setting.json", "r", encoding="UTF-8_sig") as s:
+    setting = json.load(s)
+
+CHUNIREC_TOKEN = setting["token"]["chunirec"]
+API_LIFETIME = int(setting["misc"]["api_lifetime"])
 
 def is_json_not_exists_or_outdated(filename):
     json_path = f"api_log/{filename}.json"
-    os.makedirs("api_log", exist_ok=True)
     exists = os.path.isfile(json_path)
     NOT_EXISTS = not exists
     OUTDATED = False
@@ -24,10 +30,14 @@ def is_json_not_exists_or_outdated(filename):
         logger(f"{filename}.jsonが存在していません")
     return NOT_EXISTS or OUTDATED
 
-def save_and_return_json(url, region):
-    response = requests.get(url)
+def save_and_return_json(url, filename, token=None):
+    if token:
+        params = {"token": token}
+        response = requests.get(url, params=params)
+    else:
+        response = requests.get(url)
     data = response.json()
-    with open(f"api_log/{region}.json", "w", encoding="UTF-8_sig") as a:
+    with open(f"api_log/{filename}.json", "w", encoding="UTF-8_sig") as a:
         json.dump(data, a, ensure_ascii=False)
     return data
 
@@ -58,18 +68,7 @@ def official(region):
         
     return json_data
 
-    
-
-    # json_data = response.json()
-
-    # with open(f"api_log/{region}.json", "w") as a:
-    #     json.dump(json_data, a, ensure_ascii=False)
-    # pass
-
-def official_test():
-    for i in [[URL_Domestic, "domestic"], [URL_International, "international"]]:
-        response = requests.get(i[0])
-        json_data = response.json()
-
-        with open(f"api_log/{i[1]}.json", "w", encoding="utf-8_sig") as a:
-            json.dump(json_data, a, ensure_ascii=False)
+def chunirec():
+    if is_json_not_exists_or_outdated("chunirec"):
+        logger(f"{URL_chunirec}をchunirec.jsonとして取得します")
+        json_data = save_and_return_json(URL_chunirec, "chunirec", token=CHUNIREC_TOKEN)
