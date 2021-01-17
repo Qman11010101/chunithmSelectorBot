@@ -6,6 +6,7 @@ import time
 import requests
 
 from .log import logger
+from .exceptions import TooManyRequestsError
 
 URL_International = "https://chunithm.sega.com/js/music/json/common.json"
 URL_Domestic = "https://chunithm.sega.jp/data/common.json"
@@ -34,6 +35,8 @@ def save_and_return_json(url, filename, token=None):
     if token:
         params = {"token": token}
         response = requests.get(url, params=params)
+        if response.status_code == 429:
+            raise TooManyRequestsError
     else:
         response = requests.get(url)
     data = response.json()
@@ -42,18 +45,24 @@ def save_and_return_json(url, filename, token=None):
     return data
 
 def official(region):
-    """公式サイトから取得されたJSONファイルを取得します。
+    """公式サイトからJSONファイルを取得し、辞書を返します。\n
     引数で日本版と国際版どちらを取得するか選ぶことができます。
 
-    引数:
+    引数:\n
         region(str): "international"もしくは"domestic"の値のみを取り得ます。
                       前者で国際版、後者で日本版のJSONを取得することができます。
                       大文字が混じっていた場合、小文字に変換されます。
-                      変換後、2つのどちらの値とも違う場合は、"domestic"の結果が返されます。
+                      どちらでもない値を指定した場合、ValueErrorを発生させます。
+    
+    返り値:\n
+        JSONデータ(dict): 全楽曲の情報が記載されている辞書データです。
+
+    例外:\n
+        ValueError: 引数regionに指定された値が"international"または"domestic"のどちらでもなかった場合に発生します。
     """
     region = region.lower()
     if region not in ["domestic", "international"]:
-        raise ValueError()
+        raise ValueError("Specified value is neither 'domestic' nor 'international'")
     if is_json_not_exists_or_outdated(region):
         if region == "international":
             url = URL_International
@@ -69,6 +78,23 @@ def official(region):
     return json_data
 
 def chunirec():
+    """chunirecからJSONファイルを取得し、辞書を返します。\n
+
+    返り値:\n
+        JSONデータ(dict): 全楽曲の情報が記載されている辞書データです。
+
+    例外:\n
+        TooManyRequestsError: リクエストの量が多すぎて429を返された際に発生します。
+    """
     if is_json_not_exists_or_outdated("chunirec"):
         logger(f"{URL_chunirec}をchunirec.jsonとして取得します")
-        json_data = save_and_return_json(URL_chunirec, "chunirec", token=CHUNIREC_TOKEN)
+        try:
+            json_data = save_and_return_json(URL_chunirec, "chunirec", token=CHUNIREC_TOKEN)
+        except TooManyRequestsError:
+            raise TooManyRequestsError
+    else:
+        logger(f"新しいchunirec.jsonが存在しています")
+        with open(f"api_log/chunirec.json", "r", encoding="UTF-8_sig") as a:
+            json_data = json.load(a)
+    
+    return json_data
