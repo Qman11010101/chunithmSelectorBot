@@ -4,8 +4,9 @@ import requests
 from crsbot_source.log import logger
 
 def test_chunirec():
-    """chunirecのトークンが正しいかどうかテストします。
-    返り値: int
+    """chunirecのトークンが正しいかどうかテストします。\n
+    返り値: \n
+        HTTPステータスコード(int)
     """
     with open("setting.json", "r", encoding="UTF-8_sig") as s:
         s_json = json.load(s)
