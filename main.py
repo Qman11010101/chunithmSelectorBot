@@ -10,7 +10,7 @@ import token_test
 from crsbot_source import client
 from crsbot_source.log import logger
 
-if os.path.isfile("setting.json"):
+if not os.path.isfile("setting.json"):
     print("エラー: setting.jsonが見つかりません")
     sys.exit(1)
 
