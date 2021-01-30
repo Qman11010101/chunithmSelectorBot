@@ -7,16 +7,7 @@ import requests
 
 from .log import logger
 from .exceptions import TooManyRequestsError
-
-URL_International = "https://chunithm.sega.com/js/music/json/common.json"
-URL_Domestic = "https://chunithm.sega.jp/data/common.json"
-URL_chunirec = "https://api.chunirec.net/1.3/music/showall.json"
-
-with open("setting.json", "r", encoding="UTF-8_sig") as s:
-    setting = json.load(s)
-
-CHUNIREC_TOKEN = setting["token"]["chunirec"]
-API_LIFETIME = int(setting["misc"]["api_lifetime"])
+from .consts import URL_Domestic, URL_International, URL_chunirec, CHUNIREC_TOKEN, API_LIFETIME
 
 def is_json_not_exists_or_outdated(filename):
     json_path = f"api_log/{filename}.json"

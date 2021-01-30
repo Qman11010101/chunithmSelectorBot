@@ -4,6 +4,7 @@ import json
 from .log import logger
 from .get_json import official, chunirec
 from .exceptions import TooManyRequestsError
+from .consts import MAX_MUSICS
 
 def random_select(music_number=3, difficulty=None, difficulty_range=None, category=None, artist=None, notes=None, notes_range=None):
     """指定された曲数分ランダムに選曲し、辞書形式で返します。\n

@@ -9,6 +9,7 @@ import requests
 import token_test
 from crsbot_source import client
 from crsbot_source.log import logger
+from crsbot_source.consts import DISCORD_TOKEN
 
 if not os.path.isfile("setting.json"):
     print("エラー: setting.jsonが見つかりません")

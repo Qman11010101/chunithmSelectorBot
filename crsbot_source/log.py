@@ -1,18 +1,8 @@
 import datetime
-import json
-import os
-import sys
 
 import pytz
 
-with open("setting.json") as s:
-    setting = json.load(s)
-
-tz = setting["misc"]["timezone"]
-is_logging = setting["logging"]["logging"]
-loglevel_stdio = setting["logging"]["loglevel_stdio"]
-loglevel_file = setting["logging"]["loglevel_file"]
-log_filename = setting["logging"]["log_filename"]
+from .consts import tz, log_filename, loglevel_file, loglevel_stdio, is_logging
 
 TIMEZONE = pytz.timezone(tz)
 loglv_list = {
