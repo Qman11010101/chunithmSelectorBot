@@ -6,7 +6,7 @@ from .get_json import official, chunirec
 from .exceptions import TooManyRequestsError
 from .consts import MAX_MUSICS
 
-def random_select(music_number=3, difficulty=None, difficulty_range=None, category=None, artist=None, notes=None, notes_range=None):
+def random_select(music_number=3, difficulty=None, difficulty_range=None, category=None, artist=None, notes=None, notes_range=None, bpm=None, bpm_range=None):
     """指定された曲数分ランダムに選曲し、辞書形式で返します。\n
     WORLD'S ENDおよびMASTER以外の難易度は対象外です。
     
@@ -18,6 +18,8 @@ def random_select(music_number=3, difficulty=None, difficulty_range=None, catego
         artist(str): アーティストを指定します。
         notes(int): ノーツ数を指定します。
         notes_range(str): ノーツ数の範囲を指定します。"high"または"low"を指定します。
+        bpm(int): BPMを指定します。
+        bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
     
     例外:\n
         TooManyRequestsError: リクエストの量が多すぎて429を返された際に発生します。
@@ -79,6 +81,20 @@ def random_select(music_number=3, difficulty=None, difficulty_range=None, catego
                         continue
             else: # 単一指定
                 if music_notes != notes:
+                    continue
+        
+        # BPM
+        if bpm:
+            music_bpm = music["meta"]["bpm"]
+            if bpm_range:  # 範囲指定
+                if bpm_range == "high":
+                    if bpm > music_bpm:
+                        continue
+                else:
+                    if bpm < music_bpm:
+                        continue
+            else:  # 単一指定
+                if music_bpm != bpm:
                     continue
         
         temp_list.append(music)
