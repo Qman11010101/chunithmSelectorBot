@@ -26,6 +26,9 @@ def random_select(music_number=3, difficulty=None, difficulty_range=None, catego
     if difficulty:
         difficulty = float(difficulty.replace("+", ".5"))
 
+    # music_numberを上限までに設定する
+    music_number = min(music_number, MAX_MUSICS)
+
     try:
         music_json = chunirec()
     except TooManyRequestsError:
