@@ -1,13 +1,18 @@
-import json
-
-import requests
-
-from .log import logger
 from .consts import MAX_MUSICS
-from .get_json import chunirec
 from .exceptions import TooManyRequestsError
+from .get_json import chunirec
 
-def search_chunirec(difficulty=None, difficulty_range=None, category=None, artist=None, notes=None, notes_range=None, bpm=None, bpm_range=None):
+
+def search_chunirec(
+        music_number=3,
+        difficulty=None,
+        difficulty_range=None,
+        category=None,
+        artist=None,
+        notes=None,
+        notes_range=None,
+        bpm=None,
+        bpm_range=None):
     """指定された条件に合致する楽曲のリストを返します。\n
     上限はsettingで定められた数です。
 
@@ -21,7 +26,7 @@ def search_chunirec(difficulty=None, difficulty_range=None, category=None, artis
         notes_range(str): ノーツ数の範囲を指定します。"high"または"low"を指定します。
         bpm(int): BPMを指定します。
         bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
-    
+
     例外:\n
         TooManyRequestsError: リクエストの量が多すぎて429を返された際に発生します。
     """
@@ -77,7 +82,7 @@ def search_chunirec(difficulty=None, difficulty_range=None, category=None, artis
             else:  # 単一指定
                 if music_notes != notes:
                     continue
-        
+
         # BPM
         if bpm:
             music_bpm = music["meta"]["bpm"]
@@ -93,10 +98,15 @@ def search_chunirec(difficulty=None, difficulty_range=None, category=None, artis
                     continue
 
         temp_list.append(music)
-        if len(temp_list) == MAX_MUSICS: # 最大曲数で切る
+        if len(temp_list) == MAX_MUSICS:  # 最大曲数で切る
             break
 
     return temp_list
 
-def search_international(difficulty=None, difficulty_range=None, category=None, artist=None):
+
+def search_international(
+        difficulty=None,
+        difficulty_range=None,
+        category=None,
+        artist=None):
     pass

@@ -1,15 +1,13 @@
-import json
 import os
 import sys
 
 import discord
 from discord.ext import commands
-import requests
 
 import token_test
 from crsbot_source import client
-from crsbot_source.log import logger
 from crsbot_source.consts import DISCORD_TOKEN
+from crsbot_source.log import logger
 
 if not os.path.isfile("setting.json"):
     print("エラー: setting.jsonが見つかりません")
@@ -28,4 +26,11 @@ logger("tokenは正しく設定されています", "debug")
 logger("APIより取得したファイルの保存ディレクトリを生成します", "debug")
 os.makedirs("api_log", exist_ok=True)
 
-client.client()
+bot = commands.Bot(
+    command_prefix=commands.when_mentioned_or("!"),
+    help_command=None,
+    case_insensitive=True,
+    activity=discord.Game("CHUNITHM")
+)
+
+bot.run(DISCORD_TOKEN)
