@@ -27,9 +27,6 @@ def random_select(
         notes_range(str): ノーツ数の範囲を指定します。"high"または"low"を指定します。
         bpm(int): BPMを指定します。
         bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
-
-    例外:\n
-        TooManyRequestsError: リクエストの量が多すぎて429を返された際に発生します。
     """
     # "n+"を"n.5"に変更し数値化
     if difficulty:
