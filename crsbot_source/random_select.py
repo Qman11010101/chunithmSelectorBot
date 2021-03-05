@@ -1,7 +1,6 @@
 import random
 
 from .consts import MAX_MUSICS
-from .exceptions import TooManyRequestsError
 from .get_json import chunirec, official
 
 
@@ -39,7 +38,7 @@ def random_select(
     # music_numberを上限までに設定する
     music_number = min(music_number, MAX_MUSICS)
 
-        music_json = chunirec() 
+    music_json = chunirec()
     temp_list = []
 
     for music in music_json:
