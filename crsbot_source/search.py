@@ -1,5 +1,4 @@
 from .consts import MAX_MUSICS
-from .exceptions import TooManyRequestsError
 from .get_json import chunirec
 
 
@@ -31,10 +30,7 @@ def search_chunirec(
         TooManyRequestsError: リクエストの量が多すぎて429を返された際に発生します。
     """
 
-    try:
-        music_json = chunirec()
-    except TooManyRequestsError:
-        raise TooManyRequestsError
+    music_json = chunirec()
     temp_list = []
 
     for music in music_json:
