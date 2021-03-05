@@ -39,10 +39,7 @@ def random_select(
     # music_numberを上限までに設定する
     music_number = min(music_number, MAX_MUSICS)
 
-    try:
-        music_json = chunirec()
-    except TooManyRequestsError:
-        raise TooManyRequestsError
+        music_json = chunirec() 
     temp_list = []
 
     for music in music_json:
