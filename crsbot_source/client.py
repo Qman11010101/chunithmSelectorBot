@@ -1,10 +1,15 @@
+import discord
+from discord.ext import commands
+
 from .log import logger
-from .random_select import random_select
+from .random_select import random_select, random_select_international
 
 
-def client():
+class ChunithmSelector(commands.Cog):
     pass
 
+class maimaiSelector(commands.Cog):
+    pass
 
-def error_logger(error):
+class OngekiSelector(commands.Cog):
     pass
