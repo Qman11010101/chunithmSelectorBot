@@ -8,6 +8,9 @@ URL_International = "https://chunithm.sega.com/js/music/json/common.json"
 URL_Domestic = "https://chunithm.sega.jp/data/common.json"
 URL_chunirec = "https://api.chunirec.net/1.3/music/showall.json"
 
+URL_ONGEKI = "https://ongeki.sega.jp/assets/json/music/music.json"
+URL_MAIMAI = "https://maimai.sega.jp/data/DXsongs.json"
+
 # トークン
 CHUNIREC_TOKEN = setting["token"]["chunirec"]
 DISCORD_TOKEN = setting["token"]["discord"]
