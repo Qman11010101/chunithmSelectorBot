@@ -13,6 +13,8 @@ def command_parser(command):
         elif ":" in cl[e]:
             e_temp = cl[e].split(":")
             cl[e] = [e_temp[0], e_temp[1]]
+    while len(cl) < 6:
+        cl.append("-")
     return cl
 
 class ChunithmSelector(commands.Cog):
