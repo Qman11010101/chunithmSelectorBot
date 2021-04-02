@@ -5,7 +5,7 @@ from .get_json import chunirec, official
 
 
 def random_select(
-        music_count:int =3,
+        music_count:int=3,
         difficulty:str=None,
         difficulty_range:str=None,
         category:str=None,
