@@ -102,7 +102,6 @@ def random_select(
 
     return random.sample(temp_list, min(len(temp_list), music_number))
 
-
 def random_select_international(
         music_number=3,
         difficulty=None,
