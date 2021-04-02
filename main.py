@@ -32,5 +32,6 @@ bot = commands.Bot(
     case_insensitive=True,
     activity=discord.Game("CHUNITHM")
 )
+bot.add_cog(client.ChunithmSelector(bot))
 
 bot.run(DISCORD_TOKEN)
