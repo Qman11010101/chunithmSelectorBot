@@ -5,7 +5,7 @@ from .get_json import chunirec, official
 
 
 def random_select(
-        music_number=3,
+        music_count=3,
         difficulty=None,
         difficulty_range=None,
         category=None,
@@ -18,7 +18,7 @@ def random_select(
     WORLD'S ENDおよびMASTER以外の難易度は対象外です。
 
     引数:\n
-        music_number(int): 曲数を指定します。デフォルトは3です。上限は20です。
+        music_count(int): 曲数を指定します。デフォルトは3です。上限は20です。
         difficulty(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
         difficulty_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
         category(str): カテゴリを指定します。
@@ -32,8 +32,8 @@ def random_select(
     if difficulty:
         difficulty = float(difficulty.replace("+", ".5"))
 
-    # music_numberを上限までに設定する
-    music_number = min(music_number, MAX_MUSICS)
+    # music_countを上限までに設定する
+    music_count = min(music_count, MAX_MUSICS)
 
     music_json = chunirec()
     temp_list = []
@@ -100,10 +100,10 @@ def random_select(
 
         temp_list.append(music)
 
-    return random.sample(temp_list, min(len(temp_list), music_number))
+    return random.sample(temp_list, min(len(temp_list), music_count))
 
 def random_select_international(
-        music_number=3,
+        music_count=3,
         difficulty=None,
         difficulty_range=None,
         category=None,
@@ -112,7 +112,7 @@ def random_select_international(
     MASTER以外の難易度は対象外です。
 
     引数:\n
-        music_number(int): 曲数を指定します。デフォルトは3です。上限は20です。
+        music_count(int): 曲数を指定します。デフォルトは3です。上限は20です。
         difficulty(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
         difficulty_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
         category(str): カテゴリを指定します。json内の"catcode"ではなく"category"の形式に従ってください。
@@ -159,4 +159,4 @@ def random_select_international(
 
         temp_list.append(music)
 
-    return random.sample(temp_list, min(len(temp_list), music_number))
+    return random.sample(temp_list, min(len(temp_list), music_count))
