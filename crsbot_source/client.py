@@ -21,7 +21,7 @@ class ChunithmSelector(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(aliases=["rand", "r"])
+    @commands.command()
     async def random(self, ctx, *, arg=""):
         if not arg: # 空ならエラー
             err_mes = discord.Embed(title="Error", description="パラメータが入力されていません。", color=0xff0000)
