@@ -134,6 +134,11 @@ class ChunithmSelector(commands.Cog):
         `{CMDPREF}random 5 13+:up`: レベル13+以上の楽曲の中からランダムに5曲選びます。
         `{CMDPREF}search none 東方Project none 1000:low`: 東方Projectの楽曲の中からノーツ数が1000以下の楽曲を検索します。
         `{CMDPREF}search - - - - 300:high`: 全楽曲の中からBPM300以上の楽曲を検索します。
+
+        【注意点】
+        - ジャンルは1つのみ指定可能です。
+        - 英数字は全角だと認識できません。
+        - MASTER譜面のみ検索可能です。
         """)
         await ctx.send(helpmes)
 
