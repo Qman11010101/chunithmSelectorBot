@@ -1,9 +1,9 @@
 from .consts import MAX_MUSICS
 from .get_json import chunirec
+from .log import logger
 
 
 def search_chunirec(
-        music_number=3,
         difficulty=None,
         difficulty_range=None,
         category=None,
@@ -16,7 +16,6 @@ def search_chunirec(
     上限はsettingで定められた数です。
 
     引数:\n
-        music_number(int): 曲数を指定します。デフォルトは3です。上限は20です。
         difficulty(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
         difficulty_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
         category(str): カテゴリを指定します。
@@ -26,9 +25,19 @@ def search_chunirec(
         bpm(int): BPMを指定します。
         bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
     """
+    # "n+"を"n.5"に変更し数値化
+    logger(f"難易度指定: {difficulty}", "debug")
+    if difficulty:
+        difficulty = float(difficulty.replace("+", ".5"))
 
     music_json = chunirec()
     temp_list = []
+
+    # 変数の型を変えておく
+    if notes:
+        notes = int(notes)
+    if bpm:
+        bpm = int(bpm)
 
     for music in music_json:
         # 1つ1つの要素に対して判定をしていき、Falseが出た時点でcontinueして次へ行く
@@ -91,8 +100,6 @@ def search_chunirec(
                     continue
 
         temp_list.append(music)
-        if len(temp_list) == MAX_MUSICS:  # 最大曲数で切る
-            break
 
     return temp_list
 

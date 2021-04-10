@@ -27,3 +27,5 @@ log_filename = setting["logging"]["log_filename"]
 
 # その他
 MAX_MUSICS = setting["misc"]["max_musics"]
+CMDPREF = setting["misc"]["command_prefix"]
+APP_VERSION = "0.1"

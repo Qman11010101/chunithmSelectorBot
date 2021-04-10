@@ -5,9 +5,11 @@ import time
 
 import requests
 
-from .log import logger
+from .consts import (API_LIFETIME, CHUNIREC_TOKEN, URL_chunirec, URL_Domestic,
+                     URL_International)
 from .exceptions import TooManyRequestsError
-from .consts import URL_Domestic, URL_International, URL_chunirec, CHUNIREC_TOKEN, API_LIFETIME
+from .log import logger
+
 
 def is_json_not_exists_or_outdated(filename):
     json_path = f"api_log/{filename}.json"
@@ -44,7 +46,7 @@ def official(region):
                       前者で国際版、後者で日本版のJSONを取得することができます。
                       大文字が混じっていた場合、小文字に変換されます。
                       どちらでもない値を指定した場合、ValueErrorを発生させます。
-    
+
     返り値:\n
         JSONデータ(dict): 全楽曲の情報が記載されている辞書データです。
 
@@ -65,7 +67,7 @@ def official(region):
         logger(f"新しい{region}.jsonが存在しています")
         with open(f"api_log/{region}.json", "r", encoding="UTF-8_sig") as a:
             json_data = json.load(a)
-        
+
     return json_data
 
 def chunirec():
@@ -79,13 +81,10 @@ def chunirec():
     """
     if is_json_not_exists_or_outdated("chunirec"):
         logger(f"{URL_chunirec}をchunirec.jsonとして取得します")
-        try:
-            json_data = save_and_return_json(URL_chunirec, "chunirec", token=CHUNIREC_TOKEN)
-        except TooManyRequestsError:
-            raise TooManyRequestsError
+        json_data = save_and_return_json(URL_chunirec, "chunirec", token=CHUNIREC_TOKEN)
     else:
         logger(f"新しいchunirec.jsonが存在しています")
         with open(f"api_log/chunirec.json", "r", encoding="UTF-8_sig") as a:
             json_data = json.load(a)
-    
+
     return json_data

@@ -2,18 +2,19 @@ import random
 
 from .consts import MAX_MUSICS
 from .get_json import chunirec, official
+from .log import logger
 
 
 def random_select(
-        music_count:int=3,
-        difficulty:str=None,
-        difficulty_range:str=None,
-        category:str=None,
-        artist:str=None,
-        notes:int=None,
-        notes_range:str=None,
-        bpm:int=None,
-        bpm_range:str=None):
+        music_count=None,
+        difficulty=None,
+        difficulty_range=None,
+        category=None,
+        artist=None,
+        notes=None,
+        notes_range=None,
+        bpm=None,
+        bpm_range=None):
     """指定された曲数分ランダムに選曲し、辞書形式で返します。\n
     WORLD'S ENDおよびMASTER以外の難易度は対象外です。
 
@@ -29,14 +30,23 @@ def random_select(
         bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
     """
     # "n+"を"n.5"に変更し数値化
+    logger(f"難易度指定: {difficulty}", "debug")
     if difficulty:
         difficulty = float(difficulty.replace("+", ".5"))
-
     # music_countを上限までに設定する
-    music_count = min(music_count, MAX_MUSICS)
+    if not music_count:
+        music_count = 3
+    music_count = min(int(music_count), MAX_MUSICS)
+    logger(f"曲数を{music_count}曲に設定しました", "debug")
 
     music_json = chunirec()
     temp_list = []
+
+    # 変数の型を変えておく
+    if notes:
+        notes = int(notes)
+    if bpm:
+        bpm = int(bpm)
 
     for music in music_json:
         # 1つ1つの要素に対して判定をしていき、Falseが出た時点でcontinueして次へ行く
@@ -119,8 +129,14 @@ def random_select_international(
         artist(str): アーティストを指定します。
     """
     # "n+"を"n.5"に変更し数値化
+    logger(f"難易度指定: {difficulty}", "debug")
     if difficulty:
         difficulty = float(difficulty.replace("+", ".5"))
+    # music_countを上限までに設定する
+    if not music_count:
+        music_count = 3
+    music_count = min(int(music_count), MAX_MUSICS)
+    logger(f"曲数を{music_count}曲に設定しました", "debug")
 
     music_json = official("international")
     temp_list = []

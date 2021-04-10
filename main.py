@@ -6,7 +6,7 @@ from discord.ext import commands
 
 import token_test
 from crsbot_source import client
-from crsbot_source.consts import DISCORD_TOKEN
+from crsbot_source.consts import CMDPREF, DISCORD_TOKEN
 from crsbot_source.log import logger
 
 if not os.path.isfile("setting.json"):
@@ -27,7 +27,7 @@ logger("APIより取得したファイルの保存ディレクトリを生成し
 os.makedirs("api_log", exist_ok=True)
 
 bot = commands.Bot(
-    command_prefix=commands.when_mentioned_or("!"),
+    command_prefix=commands.when_mentioned_or(CMDPREF),
     help_command=None,
     case_insensitive=True,
     activity=discord.Game("CHUNITHM")

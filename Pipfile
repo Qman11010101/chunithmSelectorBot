@@ -18,3 +18,7 @@ pyver = "python --version"
 pip = "pip"
 list = "pip list"
 testpy = "python test.py"
+
+[dev-packages]
+autopep8 = "*"
+pycodestyle = "*"
