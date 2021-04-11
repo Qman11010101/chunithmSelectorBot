@@ -18,6 +18,7 @@ pyver = "python --version"
 pip = "pip"
 list = "pip list"
 testpy = "python test.py"
+start3 = "python3 main.py"
 
 [dev-packages]
 autopep8 = "*"
