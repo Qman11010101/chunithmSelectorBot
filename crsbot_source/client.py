@@ -37,12 +37,15 @@ class ChunithmSelector(commands.Cog):
 
     @commands.command()
     async def random(self, ctx, *, arg=""):
+        logger(f"{ctx.author.name}: {CMDPREF}random {arg}")
         if not arg:
+            logger(f"引数が存在しないため、自動的に3曲選曲します", level="debug")
             arg = "3"
         c = command_parser(arg)
         try:
             res = random_select(music_count=c[0][0], difficulty=c[1][0], difficulty_range=c[1][1], category=c[2][0], artist=c[3][0], notes=c[4][0], notes_range=c[4][1], bpm=c[5][0], bpm_range=c[5][1])
             if len(res) > 0:
+                logger(f"以下の{len(res)}曲が選ばれました:")
                 embed_mes = discord.Embed(color=0x00ff00)
                 for m in res:
                     title = m["meta"]["title"]
@@ -52,7 +55,9 @@ class ChunithmSelector(commands.Cog):
                     bpm = m["meta"]["bpm"]
                     notes = m["data"]["MAS"]["maxcombo"]
                     embed_mes.add_field(name=title, value=f"ARTIST: {artist}\nGENRE: {category}\nCONST: {float(diff)}\nBPM: {bpm}\nNOTES: {notes}", inline=False)
+                    logger(f"・『{title}』")
             else:
+                logger(f"条件に合致する楽曲はありませんでした")
                 embed_mes = discord.Embed(title="Error", description="条件に合致する楽曲が見つかりませんでした。", color=0xff0000)
         except TooManyRequestsError:
             embed_mes = discord.Embed(title="Error", description="一時的にリクエスト過多になっています。10分ほど時間を置いて、再度お試しください。", color=0xff0000)
@@ -60,6 +65,7 @@ class ChunithmSelector(commands.Cog):
             embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。", color=0xff0000)
         except Exception as e:
             embed_mes = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
+            logger("内部エラーが発生しました", level="error")
             logger(traceback.format_exc(), level="error")
         finally:
             await ctx.send(embed=embed_mes)
@@ -75,6 +81,7 @@ class ChunithmSelector(commands.Cog):
             if len(res) > MAX_MUSICS:
                 embed_mes = discord.Embed(title="Error", description=f"見つかった楽曲数({len(res)}曲)が{MAX_MUSICS}曲を超えるため、表示できません。", color=0xff0000)
             elif len(res) > 0:
+                logger(f"以下の{len(res)}曲が見つかりました:")
                 embed_mes = discord.Embed(title="検索結果", description=f"{len(res)}曲見つかりました。", color=0x00ff00)
                 for m in res:
                     title = m["meta"]["title"]
@@ -84,6 +91,7 @@ class ChunithmSelector(commands.Cog):
                     bpm = m["meta"]["bpm"]
                     notes = m["data"]["MAS"]["maxcombo"]
                     embed_mes.add_field(name=title, value=f"ARTIST: {artist}\nGENRE: {category}\nCONST: {float(diff)}\nBPM: {bpm}\nNOTES: {notes}", inline=False)
+                    logger(f"・『{title}』")
             else:
                 embed_mes = discord.Embed(title="Error", description="条件に合致する楽曲が見つかりませんでした", color=0xff0000)
         except TooManyRequestsError:

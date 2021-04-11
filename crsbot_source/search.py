@@ -26,7 +26,7 @@ def search_chunirec(
         bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
     """
     # "n+"を"n.5"に変更し数値化
-    logger(f"難易度指定: {difficulty}", "debug")
+    logger(f"難易度指定: {difficulty}", level="debug")
     if difficulty:
         difficulty = float(difficulty.replace("+", ".5"))
 

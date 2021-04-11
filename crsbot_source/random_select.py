@@ -30,14 +30,14 @@ def random_select(
         bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
     """
     # "n+"を"n.5"に変更し数値化
-    logger(f"難易度指定: {difficulty}", "debug")
+    logger(f"難易度指定: {difficulty}", level="debug")
     if difficulty:
         difficulty = float(difficulty.replace("+", ".5"))
     # music_countを上限までに設定する
     if not music_count:
         music_count = 3
     music_count = min(int(music_count), MAX_MUSICS)
-    logger(f"曲数を{music_count}曲に設定しました", "debug")
+    logger(f"曲数を{music_count}曲に設定しました", level="debug")
 
     music_json = chunirec()
     temp_list = []
@@ -129,14 +129,14 @@ def random_select_international(
         artist(str): アーティストを指定します。
     """
     # "n+"を"n.5"に変更し数値化
-    logger(f"難易度指定: {difficulty}", "debug")
+    logger(f"難易度指定: {difficulty}", level="debug")
     if difficulty:
         difficulty = float(difficulty.replace("+", ".5"))
     # music_countを上限までに設定する
     if not music_count:
         music_count = 3
     music_count = min(int(music_count), MAX_MUSICS)
-    logger(f"曲数を{music_count}曲に設定しました", "debug")
+    logger(f"曲数を{music_count}曲に設定しました", level="debug")
 
     music_json = official("international")
     temp_list = []
