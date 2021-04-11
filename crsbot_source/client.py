@@ -68,7 +68,7 @@ class ChunithmSelector(commands.Cog):
             logger("内部エラーが発生しました", level="error")
             logger(traceback.format_exc(), level="error")
         finally:
-            await ctx.send(embed=embed_mes)
+            await ctx.reply(embed=embed_mes)
 
     @commands.command()
     async def search(self, ctx, *, arg=""):
@@ -102,7 +102,7 @@ class ChunithmSelector(commands.Cog):
             embed_mes = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
             logger(traceback.format_exc(), level="error")
         finally:
-            await ctx.send(embed=embed_mes)
+            await ctx.reply(embed=embed_mes)
 
     @commands.command()
     async def help(self, ctx):
