@@ -110,8 +110,8 @@ class ChunithmSelector(commands.Cog):
         **CHUNITHM Random Selector bot v{APP_VERSION}** by キューマン・エノビクト
 
         【コマンド文字列】
-        `{CMDPREF}random [曲数] [難易度(:high/low)] [ジャンル] [アーティスト] [ノーツ数(:high/low)] [BPM(:high/low)]`
-        `{CMDPREF}search [難易度(:high/low)] [ジャンル] [アーティスト] [ノーツ数(:high/low)] [BPM(:high/low)]`
+        `{CMDPREF}random [曲数] [レベル(:high/low)] [ジャンル] [アーティスト] [ノーツ数(:high/low)] [BPM(:high/low)]`
+        `{CMDPREF}search [レベル(:high/low)] [ジャンル] [アーティスト] [ノーツ数(:high/low)] [BPM(:high/low)]`
         ※`(:high/low)`がついているパラメータは、後ろに『:high』もしくは『:low』を付け足すことで『以上』『以下』を表すことができます。
 
         【パラメータ】
@@ -123,8 +123,8 @@ class ChunithmSelector(commands.Cog):
         > 指定されなかった場合、3曲として扱われます。
         > 半角数字で入力してください。
 
-        **難易度**
-        >  楽曲の難易度を指定します。
+        **レベル**
+        >  楽曲のレベルを指定します。
         > 『10』『13+』のような形で入力してください。
 
         **ジャンル**
