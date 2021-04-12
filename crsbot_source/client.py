@@ -46,7 +46,7 @@ class ChunithmSelector(commands.Cog):
             res = random_select(music_count=c[0][0], difficulty=c[1][0], difficulty_range=c[1][1], category=c[2][0], artist=c[3][0], notes=c[4][0], notes_range=c[4][1], bpm=c[5][0], bpm_range=c[5][1])
             if len(res) > 0:
                 logger(f"以下の{len(res)}曲が選ばれました:")
-                embed_mes = discord.Embed(title="選曲結果", description=f"以下の{len(res)}曲が選ばれました:", color=0x00ff00)
+                embed_mes = discord.Embed(title="選曲結果", description=f"以下の{len(res)}曲が選ばれました", color=0x00ff00)
                 for m in res:
                     title = m["meta"]["title"]
                     artist = m["meta"]["artist"]
@@ -56,7 +56,7 @@ class ChunithmSelector(commands.Cog):
                     bpm = m["meta"]["bpm"]
                     notes_e = m["data"]["EXP"]["maxcombo"]
                     notes_m = m["data"]["MAS"]["maxcombo"]
-                    embed_mes.add_field(name=title, value=f"ARTIST: {artist}\nGENRE: {category}\nEXP: {float(diff_e)} / MAS: {float(diff_m)}\nBPM: {bpm}\nNOTES EXP: {notes_e} / MAS: {notes_m}", inline=False)
+                    embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {float(diff_e)} / MAS: {float(diff_m)}\n**BPM**: {bpm}\n**NOTES** EXP: {notes_e} / MAS: {notes_m}", inline=False)
                     logger(f"・『{title}』")
             else:
                 logger(f"条件に合致する楽曲はありませんでした")
@@ -89,10 +89,12 @@ class ChunithmSelector(commands.Cog):
                     title = m["meta"]["title"]
                     artist = m["meta"]["artist"]
                     category = m["meta"]["genre"]
-                    diff = m["data"]["MAS"]["const"]
+                    diff_e = m["data"]["EXP"]["const"]
+                    diff_m = m["data"]["MAS"]["const"]
                     bpm = m["meta"]["bpm"]
-                    notes = m["data"]["MAS"]["maxcombo"]
-                    embed_mes.add_field(name=title, value=f"ARTIST: {artist}\nGENRE: {category}\nCONST: {float(diff)}\nBPM: {bpm}\nNOTES: {notes}", inline=False)
+                    notes_e = m["data"]["EXP"]["maxcombo"]
+                    notes_m = m["data"]["MAS"]["maxcombo"]
+                    embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {float(diff_e)} / MAS: {float(diff_m)}\n**BPM**: {bpm}\n**NOTES** EXP: {notes_e} / MAS: {notes_m}", inline=False)
                     logger(f"・『{title}』")
             else:
                 embed_mes = discord.Embed(title="Unfound", description="条件に合致する楽曲が見つかりませんでした。", color=0x0000ff)
@@ -154,7 +156,7 @@ class ChunithmSelector(commands.Cog):
         【注意点】
         - ジャンルは1つのみ指定可能です。
         - 英数字は全角だと認識できません。
-        - MASTER譜面のみ検索可能です。
+        - WORLD'S ENDには対応していません。
         """)
         await ctx.send(helpmes)
 
