@@ -29,3 +29,4 @@ log_filename = setting["logging"]["log_filename"]
 MAX_MUSICS = setting["misc"]["max_musics"]
 CMDPREF = setting["misc"]["command_prefix"]
 APP_VERSION = "1.0.0"
+CHANNEL_NAME = "選曲bot"

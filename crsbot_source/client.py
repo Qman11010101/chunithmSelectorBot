@@ -4,7 +4,7 @@ import traceback
 import discord
 from discord.ext import commands
 
-from .consts import APP_VERSION, CMDPREF, MAX_MUSICS
+from .consts import APP_VERSION, CHANNEL_NAME, CMDPREF, MAX_MUSICS
 from .exceptions import TooManyRequestsError
 from .log import logger
 from .random_select import random_select, random_select_international
@@ -37,6 +37,10 @@ class ChunithmSelector(commands.Cog):
 
     @commands.command()
     async def random(self, ctx, *, arg=""):
+        if ctx.message.channel.name != CHANNEL_NAME:
+            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            await ctx.send(embed=embed_mes)
+            return
         logger(f"{ctx.author.name}: {CMDPREF}random {arg}")
         if not arg:
             logger(f"引数が存在しないため、自動的に3曲選曲します", level="debug")
@@ -74,6 +78,10 @@ class ChunithmSelector(commands.Cog):
 
     @commands.command()
     async def search(self, ctx, *, arg=""):
+        if ctx.message.channel.name != CHANNEL_NAME:
+            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            await ctx.send(embed=embed_mes)
+            return
         if not arg:
             await ctx.send(discord.Embed(title="Error", description="検索条件が指定されていません。"))
             return
@@ -110,6 +118,10 @@ class ChunithmSelector(commands.Cog):
 
     @commands.command()
     async def help(self, ctx):
+        if ctx.message.channel.name != CHANNEL_NAME:
+            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            await ctx.send(embed=embed_mes)
+            return
         helpmes = textwrap.dedent(f"""
         **CHUNITHM Random Selector bot v{APP_VERSION}** by キューマン・エノビクト
 
