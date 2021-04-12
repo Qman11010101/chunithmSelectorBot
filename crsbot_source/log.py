@@ -15,7 +15,6 @@ loglv_list = {
 log_stdio_int = loglv_list[loglevel_stdio]
 log_file_int = loglv_list[loglevel_file]
 
-
 def logger(content, level="info"):
     """ロギングを行います。\n
     標準出力とファイルへの出力
