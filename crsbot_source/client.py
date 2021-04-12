@@ -58,7 +58,7 @@ class ChunithmSelector(commands.Cog):
                     logger(f"・『{title}』")
             else:
                 logger(f"条件に合致する楽曲はありませんでした")
-                embed_mes = discord.Embed(title="Error", description="条件に合致する楽曲が見つかりませんでした。", color=0xff0000)
+                embed_mes = discord.Embed(title="Unfound", description="条件に合致する楽曲が見つかりませんでした。", color=0x0000ff)
         except TooManyRequestsError:
             embed_mes = discord.Embed(title="Error", description="一時的にリクエスト過多になっています。10分ほど時間を置いて、再度お試しください。", color=0xff0000)
         except TypeError:
@@ -93,7 +93,7 @@ class ChunithmSelector(commands.Cog):
                     embed_mes.add_field(name=title, value=f"ARTIST: {artist}\nGENRE: {category}\nCONST: {float(diff)}\nBPM: {bpm}\nNOTES: {notes}", inline=False)
                     logger(f"・『{title}』")
             else:
-                embed_mes = discord.Embed(title="Error", description="条件に合致する楽曲が見つかりませんでした", color=0xff0000)
+                embed_mes = discord.Embed(title="Unfound", description="条件に合致する楽曲が見つかりませんでした。", color=0x0000ff)
         except TooManyRequestsError:
             embed_mes = discord.Embed(title="Error", description="一時的にリクエスト過多になっています。10分ほど時間を置いて、再度お試しください。", color=0xff0000)
         except (TypeError, ValueError):
@@ -138,7 +138,7 @@ class ChunithmSelector(commands.Cog):
         **ノーツ数**
         > 楽曲のノーツ数を指定します。
         > 半角数字で入力してください。
-        
+
         **BPM**
         > 楽曲のBPMを指定します。
         > 半角数字で入力してください。
