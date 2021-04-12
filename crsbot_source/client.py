@@ -27,7 +27,7 @@ def command_parser(command):
             cl[e] = [e_temp[0], ud_val]
         else:
             cl[e] = [cl[e], None]
-    while len(cl) < 6:
+    while len(cl) < 7:
         cl.append([None, None])
     return cl
 
@@ -43,7 +43,7 @@ class ChunithmSelector(commands.Cog):
             arg = "3"
         c = command_parser(arg)
         try:
-            res = random_select(music_count=c[0][0], difficulty=c[1][0], difficulty_range=c[1][1], category=c[2][0], artist=c[3][0], notes=c[4][0], notes_range=c[4][1], bpm=c[5][0], bpm_range=c[5][1])
+            res = random_select(music_count=c[0][0], level=c[1][0], level_range=c[1][1], category=c[2][0], artist=c[3][0], notes=c[4][0], notes_range=c[4][1], bpm=c[5][0], bpm_range=c[5][1], difficulty=c[6][0])
             if len(res) > 0:
                 logger(f"以下の{len(res)}曲が選ばれました:")
                 embed_mes = discord.Embed(title="選曲結果", description=f"以下の{len(res)}曲が選ばれました", color=0x00ff00)
@@ -79,7 +79,7 @@ class ChunithmSelector(commands.Cog):
             return
         c = command_parser(arg)
         try:
-            res = search_chunirec(difficulty=c[0][0], difficulty_range=c[0][1], category=c[1][0], artist=c[2][0], notes=c[3][0], notes_range=c[3][1], bpm=c[4][0], bpm_range=c[4][1])
+            res = search_chunirec(level=c[0][0], level_range=c[0][1], category=c[1][0], artist=c[2][0], notes=c[3][0], notes_range=c[3][1], bpm=c[4][0], bpm_range=c[4][1], difficulty=c[5][0])
             if len(res) > MAX_MUSICS:
                 embed_mes = discord.Embed(title="Error", description=f"見つかった楽曲数({len(res)}曲)が{MAX_MUSICS}曲を超えるため、表示できません。", color=0xff0000)
             elif len(res) > 0:
@@ -114,8 +114,8 @@ class ChunithmSelector(commands.Cog):
         **CHUNITHM Random Selector bot v{APP_VERSION}** by キューマン・エノビクト
 
         【コマンド文字列】
-        `{CMDPREF}random [曲数] [レベル(:high/low)] [ジャンル] [アーティスト] [ノーツ数(:high/low)] [BPM(:high/low)]`
-        `{CMDPREF}search [レベル(:high/low)] [ジャンル] [アーティスト] [ノーツ数(:high/low)] [BPM(:high/low)]`
+        `{CMDPREF}random [曲数] [レベル(:high/low)] [ジャンル] [アーティスト] [ノーツ数(:high/low)] [BPM(:high/low)] [難易度]`
+        `{CMDPREF}search [レベル(:high/low)] [ジャンル] [アーティスト] [ノーツ数(:high/low)] [BPM(:high/low)] [難易度]`
         ※`(:high/low)`がついているパラメータは、後ろに『:high』もしくは『:low』を付け足すことで『以上』『以下』を表すことができます。
 
         【パラメータ】
@@ -147,6 +147,11 @@ class ChunithmSelector(commands.Cog):
         **BPM**
         > 楽曲のBPMを指定します。
         > 半角数字で入力してください。
+
+        **難易度**
+        > 楽曲の難易度を指定します。EXPERTのみもしくはMASTERのみの検索をする場合に使用します。
+        > 指定する場合、『exp』もしくは『mas』と指定してください。
+        > 指定されないか、不正な値を指定した場合は自動的にEXPERTとMASTERの両方から検索します。
 
         【コマンド例】
         `{CMDPREF}random`: 全楽曲の中からランダムに3曲選びます。

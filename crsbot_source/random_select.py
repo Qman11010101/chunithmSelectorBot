@@ -6,6 +6,8 @@ from .log import logger
 
 
 def is_value_invalid(factor, music_factor, factor_range):
+    if music_factor == None:
+        return True
     if factor_range: # 範囲指定
         if factor_range == "high":
             return True if factor > music_factor else False
@@ -23,23 +25,25 @@ def random_select(
         notes=None,
         notes_range=None,
         bpm=None,
-        bpm_range=None):
+        bpm_range=None,
+        difficulty="default"):
     """指定された曲数分ランダムに選曲し、辞書形式で返します。\n
-    WORLD'S ENDおよびMASTER以外の難易度は対象外です。
+    WORLD'S ENDおよびMASTER/EXPERT以外のレベルは対象外です。
 
     引数:\n
         music_count(int): 曲数を指定します。デフォルトは3です。上限は20です。
-        level(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
-        level_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
+        level(str): レベルを指定します。"12"や"13+"などの文字列で指定します。
+        level_range(str): レベルの範囲を指定します。"high"または"low"を指定します。
         category(str): カテゴリを指定します。
         artist(str): アーティストを指定します。
         notes(int): ノーツ数を指定します。
         notes_range(str): ノーツ数の範囲を指定します。"high"または"low"を指定します。
         bpm(int): BPMを指定します。
         bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
+        difficulty(str): 難易度を指定します。"e"(EXPERT)/"m"(MASTER)/"b"(両方)のいずれかを指定します。
     """
     # "n+"を"n.5"に変更し数値化
-    logger(f"難易度指定: {level}", level="debug")
+    logger(f"レベル指定: {level}", level="debug")
     if level:
         level = float(level.replace("+", ".5"))
     # music_countを上限までに設定する
@@ -50,6 +54,10 @@ def random_select(
 
     music_json = chunirec()
     temp_list = []
+
+    # 難易度をバリデーション
+    if difficulty[0].lower() not in ("e", "m", "b"):
+        difficulty = "b"
 
     # 変数の型を変えておく
     if notes:
@@ -65,10 +73,10 @@ def random_select(
         if music["meta"]["genre"] == "WORLD'S END":
             continue
 
-        # 難易度
+        # レベル
         if level:
-            music_level_mas = music["data"]["MAS"]["level"]
-            music_level_exp = music["data"]["EXP"]["level"]
+            music_level_mas = music["data"]["MAS"]["level"] if difficulty in ("b", "m") else None
+            music_level_exp = music["data"]["EXP"]["level"] if difficulty in ("b", "e") else None
             if is_value_invalid(level, music_level_mas, level_range) and is_value_invalid(level, music_level_exp, level_range):
                 continue
 
@@ -84,8 +92,8 @@ def random_select(
 
         # ノーツ数
         if notes:
-            music_notes_mas = music["data"]["MAS"]["maxcombo"]
-            music_notes_exp = music["data"]["EXP"]["maxcombo"]
+            music_notes_mas = music["data"]["MAS"]["maxcombo"] if difficulty in ("b", "m") else None
+            music_notes_exp = music["data"]["EXP"]["maxcombo"] if difficulty in ("b", "e") else None
             if is_value_invalid(notes, music_notes_mas, notes_range) and is_value_invalid(notes, music_notes_exp, notes_range):
                 continue
 
@@ -104,19 +112,21 @@ def random_select_international(
         level=None,
         level_range=None,
         category=None,
-        artist=None):
+        artist=None,
+        difficulty="default"):
     """指定された曲数分ランダムに選曲し、辞書形式で返します。\n
-    MASTER以外の難易度は対象外です。
+    MASTER/EXPERT以外のレベルは対象外です。
 
     引数:\n
         music_count(int): 曲数を指定します。デフォルトは3です。上限は20です。
-        level(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
-        level_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
+        level(str): レベルを指定します。"12"や"13+"などの文字列で指定します。
+        level_range(str): レベルの範囲を指定します。"high"または"low"を指定します。
         category(str): カテゴリを指定します。json内の"catcode"ではなく"category"の形式に従ってください。
         artist(str): アーティストを指定します。
+        difficulty(str): 難易度を指定します。"e"(EXPERT)/"m"(MASTER)/"b"(両方)のいずれかを指定します。
     """
     # "n+"を"n.5"に変更し数値化
-    logger(f"難易度指定: {level}", level="debug")
+    logger(f"レベル指定: {level}", level="debug")
     if level:
         level = float(level.replace("+", ".5"))
     # music_countを上限までに設定する
@@ -128,6 +138,10 @@ def random_select_international(
     music_json = official("international")
     temp_list = []
 
+    # 難易度をバリデーション
+    if difficulty[0].lower() not in ("e", "m", "b"):
+        difficulty = "b"
+
     for music in music_json:
         # 1つ1つの要素に対して判定をしていき、Falseが出た時点でcontinueして次へ行く
         # 全部通ったらtemp_listにappendする
@@ -136,10 +150,10 @@ def random_select_international(
         if music["category"] == "worlds_end":  # 実際に実装されて違ったら書き直す
             continue
 
-        # 難易度
+        # レベル
         if level:
-            music_level_mas = float(music["lev_mas"].replace("+", ".5"))
-            music_level_exp = float(music["lev_exp"].replace("+", ".5"))
+            music_level_mas = float(music["lev_mas"].replace("+", ".5")) if difficulty in ("b", "m") else None
+            music_level_exp = float(music["lev_exp"].replace("+", ".5")) if difficulty in ("b", "e") else None
             if is_value_invalid(level, music_level_mas, level_range) and is_value_invalid(level, music_level_exp, level_range):
                 continue
 

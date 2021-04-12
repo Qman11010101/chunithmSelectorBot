@@ -3,6 +3,17 @@ from .get_json import chunirec
 from .log import logger
 
 
+def is_value_invalid(factor, music_factor, factor_range):
+    if music_factor == None:
+        return True
+    if factor_range: # 範囲指定
+        if factor_range == "high":
+            return True if factor > music_factor else False
+        else:
+            return True if factor < music_factor else False
+    else: # 単一指定
+        return True if music_factor != factor else False
+
 def search_chunirec(
         level=None,
         level_range=None,
@@ -11,27 +22,33 @@ def search_chunirec(
         notes=None,
         notes_range=None,
         bpm=None,
-        bpm_range=None):
+        bpm_range=None,
+        difficulty="default"):
     """指定された条件に合致する楽曲のリストを返します。\n
     上限はsettingで定められた数です。
 
     引数:\n
-        level(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
-        level_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
+        level(str): レベルを指定します。"12"や"13+"などの文字列で指定します。
+        level_range(str): レベルの範囲を指定します。"high"または"low"を指定します。
         category(str): カテゴリを指定します。
         artist(str): アーティストを指定します。
         notes(int): ノーツ数を指定します。
         notes_range(str): ノーツ数の範囲を指定します。"high"または"low"を指定します。
         bpm(int): BPMを指定します。
         bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
+        difficulty(str): 難易度を指定します。"e"(EXPERT)/"m"(MASTER)/"b"(両方)のいずれかを指定します。
     """
     # "n+"を"n.5"に変更し数値化
-    logger(f"難易度指定: {level}", level="debug")
+    logger(f"レベル指定: {level}", level="debug")
     if level:
         level = float(level.replace("+", ".5"))
 
     music_json = chunirec()
     temp_list = []
+
+    # 難易度をバリデーション
+    if difficulty[0].lower() not in ("e", "m", "b"):
+        difficulty = "b"
 
     # 変数の型を変えておく
     if notes:
@@ -47,57 +64,35 @@ def search_chunirec(
         if music["meta"]["genre"] == "WORLD'S END":
             continue
 
-        # 難易度
+        # レベル
         if level:
-            music_level = music["data"]["MAS"]["level"]
-            if level_range:  # 範囲指定
-                if level_range == "high":
-                    if level > music_level:
-                        continue
-                else:
-                    if level < music_level:
-                        continue
-            else:  # 単一指定
-                if music_level != level:
-                    continue
+            music_level_mas = music["data"]["MAS"]["level"] if difficulty in ("b", "m") else None
+            music_level_exp = music["data"]["EXP"]["level"] if difficulty in ("b", "e") else None
+            if is_value_invalid(level, music_level_mas, level_range) and is_value_invalid(level, music_level_exp, level_range):
+                continue
 
         # カテゴリ
         if category:
-            if music["meta"]["genre"] != category:
+            if not category.lower() in music["meta"]["genre"].lower():
                 continue
 
         # アーティスト
         if artist:
-            if music["meta"]["artist"] != artist:
+            if not artist.lower() in music["meta"]["artist"].lower():
                 continue
 
         # ノーツ数
         if notes:
-            music_notes = music["data"]["MAS"]["maxcombo"]
-            if notes_range:  # 範囲指定
-                if notes_range == "high":
-                    if notes > music_notes:
-                        continue
-                else:
-                    if notes < music_notes:
-                        continue
-            else:  # 単一指定
-                if music_notes != notes:
-                    continue
+            music_notes_mas = music["data"]["MAS"]["maxcombo"] if difficulty in ("b", "m") else None
+            music_notes_exp = music["data"]["EXP"]["maxcombo"] if difficulty in ("b", "e") else None
+            if is_value_invalid(notes, music_notes_mas, notes_range) and is_value_invalid(notes, music_notes_exp, notes_range):
+                continue
 
         # BPM
         if bpm:
             music_bpm = music["meta"]["bpm"]
-            if bpm_range:  # 範囲指定
-                if bpm_range == "high":
-                    if bpm > music_bpm:
-                        continue
-                else:
-                    if bpm < music_bpm:
-                        continue
-            else:  # 単一指定
-                if music_bpm != bpm:
-                    continue
+            if is_value_invalid(bpm, music_bpm, bpm_range):
+                continue
 
         temp_list.append(music)
 
@@ -108,5 +103,6 @@ def search_international(
         level=None,
         level_range=None,
         category=None,
-        artist=None):
+        artist=None,
+        difficulty="default"):
     pass
