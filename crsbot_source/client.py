@@ -152,10 +152,12 @@ class ChunithmSelector(commands.Cog):
         > 楽曲の難易度を指定します。EXPERTのみもしくはMASTERのみの検索をする場合に使用します。
         > 指定する場合、『exp』もしくは『mas』と指定してください。
         > 指定されないか、不正な値を指定した場合は自動的にEXPERTとMASTERの両方から検索します。
+        > レベルもしくはノーツ数が指定されたときのみ機能します。
 
         【コマンド例】
         `{CMDPREF}random`: 全楽曲の中からランダムに3曲選びます。
         `{CMDPREF}random 5 13+:up`: レベル13+以上の楽曲の中からランダムに5曲選びます。
+        `{CMDPREF}random - 13 - - - - exp`: レベル13のEXPERTの楽曲をランダムに3曲選びます。
         `{CMDPREF}search none 東方Project none 1000:low`: 東方Projectの楽曲の中からノーツ数が1000以下の楽曲を検索します。
         `{CMDPREF}search - - - - 300:high`: 全楽曲の中からBPM300以上の楽曲を検索します。
 
@@ -163,6 +165,7 @@ class ChunithmSelector(commands.Cog):
         - ジャンルは1つのみ指定可能です。
         - 英数字は全角だと認識できません。
         - WORLD'S ENDには対応していません。
+        - 一部の譜面定数が『0.0』と出力される場合があります。
         """)
         await ctx.send(helpmes)
 
