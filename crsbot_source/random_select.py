@@ -72,12 +72,12 @@ def random_select(
 
         # カテゴリ
         if category:
-            if music["meta"]["genre"] != category:
+            if not category.lower() in music["meta"]["genre"].lower():
                 continue
 
         # アーティスト
         if artist:
-            if music["meta"]["artist"] != artist:
+            if not artist.lower() in music["meta"]["artist"].lower():
                 continue
 
         # ノーツ数
