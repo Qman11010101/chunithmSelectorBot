@@ -47,8 +47,11 @@ def search_chunirec(
     temp_list = []
 
     # 難易度をバリデーション
-    if difficulty[0].lower() not in ("e", "m", "b"):
-        difficulty = "b"
+    if difficulty:
+        if difficulty[0].lower() not in ("e", "m", "b"):
+            difficulty = "b"
+    else:
+        difficulty = "b" # TODO: もうちょいまともな実装にする
 
     # 変数の型を変えておく
     if notes:

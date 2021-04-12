@@ -56,8 +56,11 @@ def random_select(
     temp_list = []
 
     # 難易度をバリデーション
-    if difficulty[0].lower() not in ("e", "m", "b"):
-        difficulty = "b"
+    if difficulty:
+        if difficulty[0].lower() not in ("e", "m", "b"):
+            difficulty = "b"
+    else:
+        difficulty = "b" # TODO: もうちょいまともな実装にする
 
     # 変数の型を変えておく
     if notes:
@@ -139,8 +142,11 @@ def random_select_international(
     temp_list = []
 
     # 難易度をバリデーション
-    if difficulty[0].lower() not in ("e", "m", "b"):
-        difficulty = "b"
+    if difficulty:
+        if difficulty[0].lower() not in ("e", "m", "b"):
+            difficulty = "b"
+    else:
+        difficulty = "b" # TODO: もうちょいまともな実装にする
 
     for music in music_json:
         # 1つ1つの要素に対して判定をしていき、Falseが出た時点でcontinueして次へ行く
