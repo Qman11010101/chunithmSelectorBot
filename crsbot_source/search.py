@@ -4,8 +4,8 @@ from .log import logger
 
 
 def search_chunirec(
-        difficulty=None,
-        difficulty_range=None,
+        level=None,
+        level_range=None,
         category=None,
         artist=None,
         notes=None,
@@ -16,8 +16,8 @@ def search_chunirec(
     上限はsettingで定められた数です。
 
     引数:\n
-        difficulty(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
-        difficulty_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
+        level(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
+        level_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
         category(str): カテゴリを指定します。
         artist(str): アーティストを指定します。
         notes(int): ノーツ数を指定します。
@@ -26,9 +26,9 @@ def search_chunirec(
         bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
     """
     # "n+"を"n.5"に変更し数値化
-    logger(f"難易度指定: {difficulty}", level="debug")
-    if difficulty:
-        difficulty = float(difficulty.replace("+", ".5"))
+    logger(f"難易度指定: {level}", level="debug")
+    if level:
+        level = float(level.replace("+", ".5"))
 
     music_json = chunirec()
     temp_list = []
@@ -48,17 +48,17 @@ def search_chunirec(
             continue
 
         # 難易度
-        if difficulty:
-            music_difficulty = music["data"]["MAS"]["level"]
-            if difficulty_range:  # 範囲指定
-                if difficulty_range == "high":
-                    if difficulty > music_difficulty:
+        if level:
+            music_level = music["data"]["MAS"]["level"]
+            if level_range:  # 範囲指定
+                if level_range == "high":
+                    if level > music_level:
                         continue
                 else:
-                    if difficulty < music_difficulty:
+                    if level < music_level:
                         continue
             else:  # 単一指定
-                if music_difficulty != difficulty:
+                if music_level != level:
                     continue
 
         # カテゴリ
@@ -105,8 +105,8 @@ def search_chunirec(
 
 
 def search_international(
-        difficulty=None,
-        difficulty_range=None,
+        level=None,
+        level_range=None,
         category=None,
         artist=None):
     pass

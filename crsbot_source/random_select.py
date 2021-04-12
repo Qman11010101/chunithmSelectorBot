@@ -16,8 +16,8 @@ def is_value_invalid(factor, music_factor, factor_range):
 
 def random_select(
         music_count=None,
-        difficulty=None,
-        difficulty_range=None,
+        level=None,
+        level_range=None,
         category=None,
         artist=None,
         notes=None,
@@ -29,8 +29,8 @@ def random_select(
 
     引数:\n
         music_count(int): 曲数を指定します。デフォルトは3です。上限は20です。
-        difficulty(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
-        difficulty_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
+        level(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
+        level_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
         category(str): カテゴリを指定します。
         artist(str): アーティストを指定します。
         notes(int): ノーツ数を指定します。
@@ -39,9 +39,9 @@ def random_select(
         bpm_range(str): BPMの範囲を指定します。"high"または"low"を指定します。
     """
     # "n+"を"n.5"に変更し数値化
-    logger(f"難易度指定: {difficulty}", level="debug")
-    if difficulty:
-        difficulty = float(difficulty.replace("+", ".5"))
+    logger(f"難易度指定: {level}", level="debug")
+    if level:
+        level = float(level.replace("+", ".5"))
     # music_countを上限までに設定する
     if not music_count:
         music_count = 3
@@ -66,10 +66,10 @@ def random_select(
             continue
 
         # 難易度
-        if difficulty:
-            music_difficulty_mas = music["data"]["MAS"]["level"]
-            music_difficulty_exp = music["data"]["EXP"]["level"]
-            if is_value_invalid(difficulty, music_difficulty_mas, difficulty_range) and is_value_invalid(difficulty, music_difficulty_exp, difficulty_range):
+        if level:
+            music_level_mas = music["data"]["MAS"]["level"]
+            music_level_exp = music["data"]["EXP"]["level"]
+            if is_value_invalid(level, music_level_mas, level_range) and is_value_invalid(level, music_level_exp, level_range):
                 continue
 
         # カテゴリ
@@ -101,8 +101,8 @@ def random_select(
 
 def random_select_international(
         music_count=3,
-        difficulty=None,
-        difficulty_range=None,
+        level=None,
+        level_range=None,
         category=None,
         artist=None):
     """指定された曲数分ランダムに選曲し、辞書形式で返します。\n
@@ -110,15 +110,15 @@ def random_select_international(
 
     引数:\n
         music_count(int): 曲数を指定します。デフォルトは3です。上限は20です。
-        difficulty(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
-        difficulty_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
+        level(str): 難易度を指定します。"12"や"13+"などの文字列で指定します。
+        level_range(str): 難易度の範囲を指定します。"high"または"low"を指定します。
         category(str): カテゴリを指定します。json内の"catcode"ではなく"category"の形式に従ってください。
         artist(str): アーティストを指定します。
     """
     # "n+"を"n.5"に変更し数値化
-    logger(f"難易度指定: {difficulty}", level="debug")
-    if difficulty:
-        difficulty = float(difficulty.replace("+", ".5"))
+    logger(f"難易度指定: {level}", level="debug")
+    if level:
+        level = float(level.replace("+", ".5"))
     # music_countを上限までに設定する
     if not music_count:
         music_count = 3
@@ -137,10 +137,10 @@ def random_select_international(
             continue
 
         # 難易度
-        if difficulty:
-            music_difficulty_mas = float(music["lev_mas"].replace("+", ".5"))
-            music_difficulty_exp = float(music["lev_exp"].replace("+", ".5"))
-            if is_value_invalid(difficulty, music_difficulty_mas, difficulty_range) and is_value_invalid(difficulty, music_difficulty_exp, difficulty_range):
+        if level:
+            music_level_mas = float(music["lev_mas"].replace("+", ".5"))
+            music_level_exp = float(music["lev_exp"].replace("+", ".5"))
+            if is_value_invalid(level, music_level_mas, level_range) and is_value_invalid(level, music_level_exp, level_range):
                 continue
 
         # カテゴリ
