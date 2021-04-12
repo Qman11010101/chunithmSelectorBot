@@ -51,10 +51,12 @@ class ChunithmSelector(commands.Cog):
                     title = m["meta"]["title"]
                     artist = m["meta"]["artist"]
                     category = m["meta"]["genre"]
-                    diff = m["data"]["MAS"]["const"]
+                    diff_e = m["data"]["EXP"]["const"]
+                    diff_m = m["data"]["MAS"]["const"]
                     bpm = m["meta"]["bpm"]
-                    notes = m["data"]["MAS"]["maxcombo"]
-                    embed_mes.add_field(name=title, value=f"ARTIST: {artist}\nGENRE: {category}\nCONST: {float(diff)}\nBPM: {bpm}\nNOTES: {notes}", inline=False)
+                    notes_e = m["data"]["EXP"]["maxcombo"]
+                    notes_m = m["data"]["MAS"]["maxcombo"]
+                    embed_mes.add_field(name=title, value=f"ARTIST: {artist}\nGENRE: {category}\nEXP: {float(diff_e)} / MAS: {float(diff_m)}\nBPM: {bpm}\nNOTES EXP: {notes_e} / MAS: {notes_m}", inline=False)
                     logger(f"・『{title}』")
             else:
                 logger(f"条件に合致する楽曲はありませんでした")
