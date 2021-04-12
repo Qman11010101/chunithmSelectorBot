@@ -46,7 +46,7 @@ class ChunithmSelector(commands.Cog):
             res = random_select(music_count=c[0][0], difficulty=c[1][0], difficulty_range=c[1][1], category=c[2][0], artist=c[3][0], notes=c[4][0], notes_range=c[4][1], bpm=c[5][0], bpm_range=c[5][1])
             if len(res) > 0:
                 logger(f"以下の{len(res)}曲が選ばれました:")
-                embed_mes = discord.Embed(color=0x00ff00)
+                embed_mes = discord.Embed(title="選曲結果", description=f"以下の{len(res)}曲が選ばれました:", color=0x00ff00)
                 for m in res:
                     title = m["meta"]["title"]
                     artist = m["meta"]["artist"]
