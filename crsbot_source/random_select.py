@@ -5,6 +5,15 @@ from .get_json import chunirec, official
 from .log import logger
 
 
+def is_value_invalid(factor, music_factor, factor_range):
+    if factor_range: # 範囲指定
+        if factor_range == "high":
+            return True if factor > music_factor else False
+        else:
+            return True if factor < music_factor else False
+    else: # 単一指定
+        return True if music_factor != factor else False
+
 def random_select(
         music_count=None,
         difficulty=None,
@@ -58,17 +67,10 @@ def random_select(
 
         # 難易度
         if difficulty:
-            music_difficulty = music["data"]["MAS"]["level"]
-            if difficulty_range:  # 範囲指定
-                if difficulty_range == "high":
-                    if difficulty > music_difficulty:
-                        continue
-                else:
-                    if difficulty < music_difficulty:
-                        continue
-            else:  # 単一指定
-                if music_difficulty != difficulty:
-                    continue
+            music_difficulty_mas = music["data"]["MAS"]["level"]
+            music_difficulty_exp = music["data"]["EXP"]["level"]
+            if is_value_invalid(difficulty, music_difficulty_mas, difficulty_range) and is_value_invalid(difficulty, music_difficulty_exp, difficulty_range):
+                continue
 
         # カテゴリ
         if category:
@@ -82,31 +84,16 @@ def random_select(
 
         # ノーツ数
         if notes:
-            music_notes = music["data"]["MAS"]["maxcombo"]
-            if notes_range:  # 範囲指定
-                if notes_range == "high":
-                    if notes > music_notes:
-                        continue
-                else:
-                    if notes < music_notes:
-                        continue
-            else:  # 単一指定
-                if music_notes != notes:
-                    continue
+            music_notes_mas = music["data"]["MAS"]["maxcombo"]
+            music_notes_exp = music["data"]["EXP"]["maxcombo"]
+            if is_value_invalid(notes, music_notes_mas, notes_range) and is_value_invalid(notes, music_notes_exp, notes_range):
+                continue
 
         # BPM
         if bpm:
             music_bpm = music["meta"]["bpm"]
-            if bpm_range:  # 範囲指定
-                if bpm_range == "high":
-                    if bpm > music_bpm:
-                        continue
-                else:
-                    if bpm < music_bpm:
-                        continue
-            else:  # 単一指定
-                if music_bpm != bpm:
-                    continue
+            if is_value_invalid(bpm, music_bpm, bpm_range):
+                continue
 
         temp_list.append(music)
 
@@ -151,17 +138,10 @@ def random_select_international(
 
         # 難易度
         if difficulty:
-            music_difficulty = float(music["lev_mas"].replace("+", ".5"))
-            if difficulty_range:  # 範囲指定
-                if difficulty_range == "high":
-                    if difficulty > music_difficulty:
-                        continue
-                else:
-                    if difficulty < music_difficulty:
-                        continue
-            else:  # 単一指定
-                if music_difficulty != difficulty:
-                    continue
+            music_difficulty_mas = float(music["lev_mas"].replace("+", ".5"))
+            music_difficulty_exp = float(music["lev_exp"].replace("+", ".5"))
+            if is_value_invalid(difficulty, music_difficulty_mas, difficulty_range) and is_value_invalid(difficulty, music_difficulty_exp, difficulty_range):
+                continue
 
         # カテゴリ
         if category:
