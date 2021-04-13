@@ -50,6 +50,8 @@ def search_chunirec(
     if difficulty:
         if difficulty[0].lower() not in ("e", "m", "b"):
             difficulty = "b"
+        else:
+            difficulty = difficulty[0].lower()
     else:
         difficulty = "b" # TODO: もうちょいまともな実装にする
 
