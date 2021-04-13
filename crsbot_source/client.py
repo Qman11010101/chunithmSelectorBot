@@ -1,3 +1,4 @@
+import random
 import textwrap
 import traceback
 
@@ -7,7 +8,6 @@ from discord.ext import commands
 from .consts import APP_VERSION, CHANNEL_NAME, CMDPREF, MAX_MUSICS
 from .exceptions import TooManyRequestsError
 from .log import logger
-from .random_select import random_select, random_select_international
 from .search import search_chunirec
 
 
@@ -47,11 +47,18 @@ class ChunithmSelector(commands.Cog):
             arg = "3"
         c = command_parser(arg)
         try:
-            res = random_select(music_count=c[0][0], level=c[1][0], level_range=c[1][1], category=c[2][0], artist=c[3][0], notes=c[4][0], notes_range=c[4][1], bpm=c[5][0], bpm_range=c[5][1], difficulty=c[6][0])
-            if len(res) > 0:
-                logger(f"以下の{len(res)}曲が選ばれました:")
-                embed_mes = discord.Embed(title="選曲結果", description=f"以下の{len(res)}曲が選ばれました", color=0x00ff00)
-                for m in res:
+            music_count = c[0][0]
+            # music_countを上限までに設定する
+            if not music_count:
+                music_count = 3
+            music_count = min(int(music_count), MAX_MUSICS)
+            logger(f"曲数を{music_count}曲に設定しました", level="debug")
+            res = search_chunirec(level=c[1][0], level_range=c[1][1], category=c[2][0], artist=c[3][0], notes=c[4][0], notes_range=c[4][1], bpm=c[5][0], bpm_range=c[5][1], difficulty=c[6][0])
+            r = random.sample(res, min(len(res), music_count))
+            if (lr := len(r)) > 0:
+                logger(f"以下の{lr}曲が選ばれました:")
+                embed_mes = discord.Embed(title="選曲結果", description=f"以下の{lr}曲が選ばれました", color=0x00ff00)
+                for m in r:
                     title = m["meta"]["title"]
                     artist = m["meta"]["artist"]
                     category = m["meta"]["genre"]
@@ -88,11 +95,11 @@ class ChunithmSelector(commands.Cog):
         c = command_parser(arg)
         try:
             res = search_chunirec(level=c[0][0], level_range=c[0][1], category=c[1][0], artist=c[2][0], notes=c[3][0], notes_range=c[3][1], bpm=c[4][0], bpm_range=c[4][1], difficulty=c[5][0])
-            if len(res) > MAX_MUSICS:
-                embed_mes = discord.Embed(title="Error", description=f"見つかった楽曲数({len(res)}曲)が{MAX_MUSICS}曲を超えるため、表示できません。", color=0xff0000)
-            elif len(res) > 0:
-                logger(f"以下の{len(res)}曲が見つかりました:")
-                embed_mes = discord.Embed(title="検索結果", description=f"{len(res)}曲見つかりました。", color=0x00ff00)
+            if (lr := len(res)) > MAX_MUSICS:
+                embed_mes = discord.Embed(title="Error", description=f"見つかった楽曲数({lr}曲)が{MAX_MUSICS}曲を超えるため、表示できません。", color=0xff0000)
+            elif lr > 0:
+                logger(f"以下の{lr}曲が見つかりました:")
+                embed_mes = discord.Embed(title="検索結果", description=f"{lr}曲見つかりました。", color=0x00ff00)
                 for m in res:
                     title = m["meta"]["title"]
                     artist = m["meta"]["artist"]
