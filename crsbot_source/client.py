@@ -184,7 +184,7 @@ class ChunithmSelector(commands.Cog):
         - ジャンルは1つのみ指定可能です。
         - 英数字は全角だと認識できません。
         - WORLD'S ENDには対応していません。
-        - 一部の譜面定数が『0.0』と出力される場合があります。
+        - 一部の値が未登録になっている場合があります。
         """)
         await ctx.send(helpmes)
 
