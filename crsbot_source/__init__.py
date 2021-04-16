@@ -6,7 +6,6 @@ from .consts import *
 from .exceptions import *
 from .get_json import *
 from .log import *
-from .random_select import *
 from .search import *
 
 __all__ = [os.path.split(os.path.splitext(file)[0])[1] for file in glob.glob(
