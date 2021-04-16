@@ -62,11 +62,11 @@ class ChunithmSelector(commands.Cog):
                     title = m["meta"]["title"]
                     artist = m["meta"]["artist"]
                     category = m["meta"]["genre"]
-                    diff_e = m["data"]["EXP"]["const"]
-                    diff_m = m["data"]["MAS"]["const"]
-                    bpm = m["meta"]["bpm"]
-                    notes_e = m["data"]["EXP"]["maxcombo"]
-                    notes_m = m["data"]["MAS"]["maxcombo"]
+                    diff_e = m["data"]["EXP"]["const"] if int(m["data"]["EXP"]["const"]) != 0 else "未登録"
+                    diff_m = m["data"]["MAS"]["const"] if int(m["data"]["MAS"]["const"]) != 0 else "未登録"
+                    bpm = m["meta"]["bpm"] if int(m["meta"]["bpm"]) != 0 else "未登録"
+                    notes_e = m["data"]["EXP"]["maxcombo"] if int(m["data"]["EXP"]["maxcombo"]) != 0 else "未登録"
+                    notes_m = m["data"]["MAS"]["maxcombo"] if int(m["data"]["MAS"]["maxcombo"]) != 0 else "未登録"
                     embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {float(diff_e)} / MAS: {float(diff_m)}\n**BPM**: {bpm}\n**NOTES** EXP: {notes_e} / MAS: {notes_m}", inline=False)
                     logger(f"・『{title}』")
             else:
@@ -104,11 +104,11 @@ class ChunithmSelector(commands.Cog):
                     title = m["meta"]["title"]
                     artist = m["meta"]["artist"]
                     category = m["meta"]["genre"]
-                    diff_e = m["data"]["EXP"]["const"] if m["data"]["EXP"]["const"] != 0.0 else "未登録"
-                    diff_m = m["data"]["MAS"]["const"] if m["data"]["EXP"]["const"] != 0.0 else "未登録"
-                    bpm = m["meta"]["bpm"] if m["data"]["EXP"]["const"] != 0.0 else "未登録"
-                    notes_e = m["data"]["EXP"]["maxcombo"] if m["data"]["EXP"]["const"] != 0.0 else "未登録"
-                    notes_m = m["data"]["MAS"]["maxcombo"] if m["data"]["EXP"]["const"] != 0.0 else "未登録"
+                    diff_e = m["data"]["EXP"]["const"] if int(m["data"]["EXP"]["const"]) != 0 else "未登録"
+                    diff_m = m["data"]["MAS"]["const"] if int(m["data"]["MAS"]["const"]) != 0 else "未登録"
+                    bpm = m["meta"]["bpm"] if int(m["meta"]["bpm"]) != 0 else "未登録"
+                    notes_e = m["data"]["EXP"]["maxcombo"] if int(m["data"]["EXP"]["maxcombo"]) != 0 else "未登録"
+                    notes_m = m["data"]["MAS"]["maxcombo"] if int(m["data"]["MAS"]["maxcombo"]) != 0 else "未登録"
                     embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {float(diff_e)} / MAS: {float(diff_m)}\n**BPM**: {bpm}\n**NOTES** EXP: {notes_e} / MAS: {notes_m}", inline=False)
                     logger(f"・『{title}』")
             else:
