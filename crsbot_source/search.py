@@ -41,6 +41,7 @@ def search_chunirec(
     # "n+"を"n.5"に変更し数値化
     logger(f"レベル指定: {level}", level="debug")
     if level:
+        is_const = True if "." in level else False
         level = float(level.replace("+", ".5"))
 
     music_json = chunirec()
@@ -71,8 +72,12 @@ def search_chunirec(
 
         # レベル
         if level:
-            music_level_mas = music["data"]["MAS"]["level"] if difficulty in ("b", "m") else None
-            music_level_exp = music["data"]["EXP"]["level"] if difficulty in ("b", "e") else None
+            if is_const:
+                music_level_mas = music["data"]["MAS"]["const"] if difficulty in ("b", "m") else None
+                music_level_exp = music["data"]["EXP"]["const"] if difficulty in ("b", "e") else None
+            else:
+                music_level_mas = music["data"]["MAS"]["level"] if difficulty in ("b", "m") else None
+                music_level_exp = music["data"]["EXP"]["level"] if difficulty in ("b", "e") else None
             if is_value_invalid(level, music_level_mas, level_range) and is_value_invalid(level, music_level_exp, level_range):
                 continue
 
