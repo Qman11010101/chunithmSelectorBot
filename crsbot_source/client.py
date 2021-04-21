@@ -12,6 +12,8 @@ from .search import search_chunirec
 
 
 def command_parser(command):
+    # 便宜上、各要素を長さ2のリストにしている
+    # 「:high」「:low」のない要素のリストの2番目はNoneになる
     cl = command.split()
     for e in range(len(cl)):
         if cl[e] == "-" or cl[e].lower() == "none":
