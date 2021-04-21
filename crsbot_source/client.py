@@ -5,7 +5,7 @@ import discord
 import jaconv
 from discord.ext import commands
 
-from .consts import APP_VERSION, CHANNEL_NAME, CMDPREF, HELPMES, MAX_MUSICS
+from .consts import CHANNEL_NAME, CMDPREF, HELPMES, MAX_MUSICS
 from .exceptions import TooManyRequestsError
 from .log import logger
 from .search import search_chunirec
