@@ -14,7 +14,7 @@ from .search import search_chunirec
 def command_parser(command):
     # 便宜上、各要素を長さ2のリストにしている
     # 「:high」「:low」のない要素のリストの2番目はNoneになる
-    cl = jaconv.z2h(command, ascii=True).split()
+    cl = jaconv.z2h(command, kana=False, digit=True, ascii=True).split()
     for e in range(len(cl)):
         if cl[e] == "-" or cl[e].lower() == "none":
             cl[e] = [None, None]
