@@ -5,8 +5,7 @@ import time
 
 import requests
 
-from .consts import (API_LIFETIME, CHUNIREC_TOKEN, URL_chunirec, URL_Domestic,
-                     URL_International)
+from .consts import CHUNIREC_TOKEN, URL_chunirec
 from .exceptions import TooManyRequestsError
 from .log import logger
 
@@ -42,39 +41,6 @@ def save_and_return_json(url, filename, token=None):
     with open(f"api_log/{filename}.json", "w", encoding="UTF-8_sig") as a:
         json.dump(data, a, ensure_ascii=False)
     return data
-
-def official(region):
-    """公式サイトからJSONファイルを取得し、辞書を返します。\n
-    引数で日本版と国際版どちらを取得するか選ぶことができます。
-
-    引数:\n
-        region(str): "international"もしくは"domestic"の値のみを取り得ます。
-                      前者で国際版、後者で日本版のJSONを取得することができます。
-                      大文字が混じっていた場合、小文字に変換されます。
-                      どちらでもない値を指定した場合、ValueErrorを発生させます。
-
-    返り値:\n
-        JSONデータ(dict): 全楽曲の情報が記載されている辞書データです。
-
-    例外:\n
-        ValueError: 引数regionに指定された値が"international"または"domestic"のどちらでもなかった場合に発生します。
-    """
-    region = region.lower()
-    if region not in ["domestic", "international"]:
-        raise ValueError("Specified value is neither 'domestic' nor 'international'")
-    if is_json_not_exists_or_outdated(region):
-        if region == "international":
-            url = URL_International
-        else:
-            url = URL_Domestic
-        logger(f"{url}を{region}.jsonとして取得します")
-        json_data = save_and_return_json(url, region)
-    else:
-        logger(f"新しい{region}.jsonが存在しています")
-        with open(f"api_log/{region}.json", "r", encoding="UTF-8_sig") as a:
-            json_data = json.load(a)
-
-    return json_data
 
 def chunirec():
     """chunirecからJSONファイルを取得し、辞書を返します。\n
