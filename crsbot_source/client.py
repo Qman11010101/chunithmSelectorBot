@@ -33,6 +33,17 @@ def command_parser(command):
         cl.append([None, None])
     return cl
 
+def chunirec_parser(m, filler="未登録"):
+    title = m["meta"]["title"]
+    artist = m["meta"]["artist"]
+    category = m["meta"]["genre"]
+    diff_e = m["data"]["EXP"]["const"] if int(m["data"]["EXP"]["const"]) != 0 else filler
+    diff_m = m["data"]["MAS"]["const"] if int(m["data"]["MAS"]["const"]) != 0 else filler
+    bpm = m["meta"]["bpm"] if int(m["meta"]["bpm"]) != 0 else filler
+    notes_e = m["data"]["EXP"]["maxcombo"] if int(m["data"]["EXP"]["maxcombo"]) != 0 else filler
+    notes_m = m["data"]["MAS"]["maxcombo"] if int(m["data"]["MAS"]["maxcombo"]) != 0 else filler
+    return [title, artist, category, diff_e, diff_m, bpm, notes_e, notes_m]
+
 class ChunithmSelector(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -61,14 +72,15 @@ class ChunithmSelector(commands.Cog):
                 logger(f"以下の{lr}曲が選ばれました:")
                 embed_mes = discord.Embed(title="選曲結果", description=f"以下の{lr}曲が選ばれました", color=0x00ff00)
                 for m in r:
-                    title = m["meta"]["title"]
-                    artist = m["meta"]["artist"]
-                    category = m["meta"]["genre"]
-                    diff_e = m["data"]["EXP"]["const"] if int(m["data"]["EXP"]["const"]) != 0 else "未登録"
-                    diff_m = m["data"]["MAS"]["const"] if int(m["data"]["MAS"]["const"]) != 0 else "未登録"
-                    bpm = m["meta"]["bpm"] if int(m["meta"]["bpm"]) != 0 else "未登録"
-                    notes_e = m["data"]["EXP"]["maxcombo"] if int(m["data"]["EXP"]["maxcombo"]) != 0 else "未登録"
-                    notes_m = m["data"]["MAS"]["maxcombo"] if int(m["data"]["MAS"]["maxcombo"]) != 0 else "未登録"
+                    data = chunirec_parser(m)
+                    title = data[0]
+                    artist = data[1]
+                    category = data[2]
+                    diff_e = data[3]
+                    diff_m = data[4]
+                    bpm = data[5]
+                    notes_e = data[6]
+                    notes_m = data[7]
                     embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {float(diff_e)} / MAS: {float(diff_m)}\n**BPM**: {bpm}\n**NOTES** EXP: {notes_e} / MAS: {notes_m}", inline=False)
                     logger(f"・『{title}』")
             else:
@@ -104,14 +116,15 @@ class ChunithmSelector(commands.Cog):
                 logger(f"以下の{lr}曲が見つかりました:")
                 embed_mes = discord.Embed(title="検索結果", description=f"{lr}曲見つかりました。", color=0x00ff00)
                 for m in res:
-                    title = m["meta"]["title"]
-                    artist = m["meta"]["artist"]
-                    category = m["meta"]["genre"]
-                    diff_e = m["data"]["EXP"]["const"] if int(m["data"]["EXP"]["const"]) != 0 else "未登録"
-                    diff_m = m["data"]["MAS"]["const"] if int(m["data"]["MAS"]["const"]) != 0 else "未登録"
-                    bpm = m["meta"]["bpm"] if int(m["meta"]["bpm"]) != 0 else "未登録"
-                    notes_e = m["data"]["EXP"]["maxcombo"] if int(m["data"]["EXP"]["maxcombo"]) != 0 else "未登録"
-                    notes_m = m["data"]["MAS"]["maxcombo"] if int(m["data"]["MAS"]["maxcombo"]) != 0 else "未登録"
+                    data = chunirec_parser(m)
+                    title = data[0]
+                    artist = data[1]
+                    category = data[2]
+                    diff_e = data[3]
+                    diff_m = data[4]
+                    bpm = data[5]
+                    notes_e = data[6]
+                    notes_m = data[7]
                     embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {float(diff_e)} / MAS: {float(diff_m)}\n**BPM**: {bpm}\n**NOTES** EXP: {notes_e} / MAS: {notes_m}", inline=False)
                     logger(f"・『{title}』")
             else:
