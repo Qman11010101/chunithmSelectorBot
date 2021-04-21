@@ -43,7 +43,7 @@ class ChunithmSelector(commands.Cog):
             embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
             await ctx.send(embed=embed_mes)
             return
-        logger(f"{ctx.author.name}: {CMDPREF}random {arg}")
+        logger(f"【{ctx.guild.name}】{ctx.author.name}: {CMDPREF}random {arg}")
         if not arg:
             logger(f"引数が存在しないため、自動的に3曲選曲します", level="debug")
             arg = "3"
@@ -94,6 +94,7 @@ class ChunithmSelector(commands.Cog):
         if not arg:
             await ctx.send(discord.Embed(title="Error", description="検索条件が指定されていません。"))
             return
+        logger(f"【{ctx.guild.name}】{ctx.author.name}: {CMDPREF}search {arg}")
         c = command_parser(arg)
         try:
             res = search_chunirec(level=c[0][0], level_range=c[0][1], category=c[1][0], artist=c[2][0], notes=c[3][0], notes_range=c[3][1], bpm=c[4][0], bpm_range=c[4][1], difficulty=c[5][0])
