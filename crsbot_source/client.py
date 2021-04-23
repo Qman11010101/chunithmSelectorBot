@@ -89,7 +89,7 @@ class ChunithmSelector(commands.Cog):
         except TooManyRequestsError:
             embed_mes = discord.Embed(title="Error", description="一時的にリクエスト過多になっています。10分ほど時間を置いて、再度お試しください。", color=0xff0000)
         except (TypeError, ValueError):
-            embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。", color=0xff0000)
+            embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。\n**HINT**: 余計な『+』や『:』がついたり、スペースをつけ忘れたりしていませんか？", color=0xff0000)
         except Exception as e:
             embed_mes = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
             logger("内部エラーが発生しました", level="error")
@@ -132,7 +132,7 @@ class ChunithmSelector(commands.Cog):
         except TooManyRequestsError:
             embed_mes = discord.Embed(title="Error", description="一時的にリクエスト過多になっています。10分ほど時間を置いて、再度お試しください。", color=0xff0000)
         except (TypeError, ValueError):
-            embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。", color=0xff0000)
+            embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。\n**HINT**: 余計な『+』や『:』がついたり、スペースをつけ忘れたりしていませんか？", color=0xff0000)
         except Exception as e:
             embed_mes = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
             logger(traceback.format_exc(), level="error")
