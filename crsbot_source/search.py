@@ -28,7 +28,7 @@ def search_chunirec(
     上限はsettingで定められた数です。
 
     引数:\n
-        level(str): レベルを指定します。"12"や"13+"などの文字列で指定します。
+        level(str): レベルを指定します。"12"や"13.7"などの文字列で指定します。
         level_range(str): レベルの範囲を指定します。"high"または"low"を指定します。
         category(str): カテゴリを指定します。
         artist(str): アーティストを指定します。
