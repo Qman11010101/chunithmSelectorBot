@@ -4,7 +4,7 @@ from .log import logger
 
 
 def is_value_invalid(factor, music_factor, factor_range):
-    if music_factor == None:
+    if music_factor is None:
         return True
     if factor_range: # 範囲指定
         if factor_range == "high":
