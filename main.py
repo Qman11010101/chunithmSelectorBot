@@ -33,6 +33,7 @@ bot = commands.Bot(
     activity=discord.Game("CHUNITHM")
 )
 bot.add_cog(client.ChunithmSelector(bot))
+bot.add_cog(client.OngekiSelector(bot))
 
 logger("botを起動します", level="debug")
 bot.run(DISCORD_TOKEN)
