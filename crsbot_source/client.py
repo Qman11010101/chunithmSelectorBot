@@ -5,10 +5,10 @@ import discord
 import mojimoji
 from discord.ext import commands
 
-from .consts import CHANNEL_NAME, CMDPREF, HELPMES, MAX_MUSICS
+from .consts import CHANNEL_NAME, CMDPREF, HELPMES, HELPMES_ONGEKI, MAX_MUSICS
 from .exceptions import TooManyRequestsError
 from .log import logger
-from .search import search_chunirec
+from .search import search_chunirec, search_ongeki
 
 
 def command_parser(command):
@@ -43,6 +43,14 @@ def chunirec_parser(m, filler="未登録"):
     notes_e = m["data"]["EXP"]["maxcombo"] if int(m["data"]["EXP"]["maxcombo"]) != 0 else filler
     notes_m = m["data"]["MAS"]["maxcombo"] if int(m["data"]["MAS"]["maxcombo"]) != 0 else filler
     return [title, artist, category, diff_e, diff_m, bpm, notes_e, notes_m]
+
+def ongeki_parser(m):
+    title = m["title"]
+    artist = m["artist"]
+    category = m["category"]
+    diff_e = m["lev_exc"]
+    diff_m = m["lev_mas"]
+    return [title, artist, category, diff_e, diff_m]
 
 class ChunithmSelector(commands.Cog):
     def __init__(self, bot):
@@ -151,4 +159,90 @@ class maimaiSelector(commands.Cog):
     pass
 
 class OngekiSelector(commands.Cog):
-    pass
+    @commands.command(aliases=["hgeki"])
+    async def help_ongeki(self, ctx):
+        if ctx.message.channel.name != CHANNEL_NAME:
+            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            await ctx.send(embed=embed_mes)
+            return
+        await ctx.send(HELPMES_ONGEKI)
+
+    @commands.command(aliases=["rgeki"])
+    async def random_ongeki(self, ctx, *, arg=""):
+        if ctx.message.channel.name != CHANNEL_NAME:
+            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            await ctx.send(embed=embed_mes)
+            return
+        logger(f"【{ctx.guild.name}】{ctx.author.name}: {CMDPREF}random_ongeki {arg}")
+        if not arg:
+            logger(f"引数が存在しないため、自動的に3曲選曲します", level="debug")
+            arg = "3"
+        c = command_parser(arg)
+        try:
+            music_count = c[0][0]
+            # music_countを上限までに設定する
+            if not music_count:
+                music_count = 3
+            music_count = min(int(music_count), MAX_MUSICS)
+            logger(f"曲数を{music_count}曲に設定しました", level="debug")
+            res = search_ongeki(level=c[1][0], level_range=c[1][1], category=c[2][0], artist=c[3][0], difficulty=c[4][0])
+            r = random.sample(res, min(len(res), music_count))
+            if (lr := len(r)) > 0:
+                logger(f"以下の{lr}曲が選ばれました:")
+                embed_mes = discord.Embed(title="選曲結果", description=f"以下の{lr}曲が選ばれました", color=0x00ff00)
+                for m in r:
+                    data = ongeki_parser(m)
+                    title = data[0]
+                    artist = data[1]
+                    category = data[2]
+                    diff_e = data[3]
+                    diff_m = data[4]
+                    embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {diff_e} / MAS: {diff_m}", inline=False)
+                    logger(f"・『{title}』")
+            else:
+                logger(f"条件に合致する楽曲はありませんでした")
+                embed_mes = discord.Embed(title="Unfound", description="条件に合致する楽曲が見つかりませんでした。", color=0x0000ff)
+        except (TypeError, ValueError):
+            embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。\n**HINT**: 余計な『+』や『:』がついたり、スペースをつけ忘れたりしていませんか？", color=0xff0000)
+        except Exception as e:
+            embed_mes = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
+            logger("内部エラーが発生しました", level="error")
+            logger(traceback.format_exc(), level="error")
+        finally:
+            await ctx.reply(embed=embed_mes)
+
+    @commands.command(aliases=["sgeki"])
+    async def search_ongeki(self, ctx, *, arg=""):
+        if ctx.message.channel.name != CHANNEL_NAME:
+            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            await ctx.send(embed=embed_mes)
+            return
+        logger(f"【{ctx.guild.name}】{ctx.author.name}: {CMDPREF}search_ongeki {arg}")
+        c = command_parser(arg)
+        try:
+            res = search_ongeki(level=c[0][0], level_range=c[0][1], category=c[1][0], artist=c[2][0], difficulty=c[3][0])
+            if (lr := len(res)) > MAX_MUSICS:
+                embed_mes = discord.Embed(title="Error", description=f"見つかった楽曲数({lr}曲)が{MAX_MUSICS}曲を超えるため、表示できません。", color=0xff0000)
+            elif lr > 0:
+                logger(f"以下の{lr}曲が見つかりました:")
+                embed_mes = discord.Embed(title="検索結果", description=f"{lr}曲見つかりました。", color=0x00ff00)
+                for m in res:
+                    data = ongeki_parser(m)
+                    title = data[0]
+                    artist = data[1]
+                    category = data[2]
+                    diff_e = data[3]
+                    diff_m = data[4]
+                    embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {diff_e} / MAS: {diff_m}", inline=False)
+                    logger(f"・『{title}』")
+            else:
+                logger(f"条件に合致する楽曲はありませんでした")
+                embed_mes = discord.Embed(title="Unfound", description="条件に合致する楽曲が見つかりませんでした。", color=0x0000ff)
+        except (TypeError, ValueError):
+            embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。\n**HINT**: 余計な『+』や『:』がついたり、スペースをつけ忘れたりしていませんか？", color=0xff0000)
+        except Exception as e:
+            embed_mes = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
+            logger("内部エラーが発生しました", level="error")
+            logger(traceback.format_exc(), level="error")
+        finally:
+            await ctx.reply(embed=embed_mes)
