@@ -89,6 +89,8 @@ HELPMES = f"""
 - ジャンルは1つのみ指定可能です。
 - WORLD'S ENDには対応していません。
 - 一部の値が未登録になっている場合があります。
+
+**オンゲキ楽曲も検索可能です！`{CMDPREF}help_ongeki`もしくは`{CMDPREF}hgeki`でヘルプを呼び出せます！**
 """
 
 HELPMES_ONGEKI = f"""
