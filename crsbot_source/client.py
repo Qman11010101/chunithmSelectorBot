@@ -2,7 +2,7 @@ import random
 import traceback
 
 import discord
-import jaconv
+import mojimoji
 from discord.ext import commands
 
 from .consts import CHANNEL_NAME, CMDPREF, HELPMES, MAX_MUSICS
@@ -14,7 +14,7 @@ from .search import search_chunirec
 def command_parser(command):
     # 便宜上、各要素を長さ2のリストにしている
     # 「:high」「:low」のない要素のリストの2番目はNoneになる
-    cl = jaconv.z2h(command, kana=False, digit=True, ascii=True).split()
+    cl = mojimoji.zen_to_han(command, kana=False).split()
     for e in range(len(cl)):
         if cl[e] == "-" or cl[e].lower() == "none":
             cl[e] = [None, None]

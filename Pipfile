@@ -7,7 +7,7 @@ verify_ssl = true
 requests = "*"
 "discord.py" = "*"
 pytz = "*"
-jaconv = "*"
+mojimoji = "*"
 
 [requires]
 python_version = "3"
