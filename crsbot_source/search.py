@@ -1,5 +1,5 @@
 from .consts import MAX_MUSICS
-from .get_json import chunirec
+from .get_json import chunirec, official
 from .log import logger
 
 
@@ -102,6 +102,55 @@ def search_chunirec(
         if bpm:
             music_bpm = music["meta"]["bpm"]
             if is_value_invalid(bpm, music_bpm, bpm_range):
+                continue
+
+        temp_list.append(music)
+
+    return temp_list
+
+def search_ongeki(level=None,
+                  level_range=None,
+                  category=None,
+                  artist=None,
+                  difficulty="default"):
+    # "n+"を"n.5"に変更し数値化
+    logger(f"レベル指定: {level}", level="debug")
+    if level:
+        level = float(level.replace("+", ".5"))
+
+    music_json = official("ongeki")
+    temp_list = []
+
+    # 難易度をバリデーション
+    if difficulty:
+        if difficulty[0].lower() not in ("e", "m", "b"):
+            difficulty = "b"
+    else:
+        difficulty = "b" # TODO: もうちょいまともな実装にする
+
+    for music in music_json:
+        # 1つ1つの要素に対して判定をしていき、Falseが出た時点でcontinueして次へ行く
+        # 全部通ったらtemp_listにappendする
+
+        # WE除外
+        if music["category"] == "worlds_end":  # 実際に実装されて違ったら書き直す
+            continue
+
+        # レベル
+        if level:
+            music_level_mas = float(music["lev_mas"].replace("+", ".5")) if difficulty in ("b", "m") else None
+            music_level_exp = float(music["lev_exp"].replace("+", ".5")) if difficulty in ("b", "e") else None
+            if is_value_invalid(level, music_level_mas, level_range) and is_value_invalid(level, music_level_exp, level_range):
+                continue
+
+        # カテゴリ
+        if category:
+            if music["category"] != category:  # categoryの方が扱いやすいのでそっちにする
+                continue
+
+        # アーティスト
+        if artist:
+            if music["artist"] != artist:
                 continue
 
         temp_list.append(music)
