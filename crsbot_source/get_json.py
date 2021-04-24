@@ -36,7 +36,7 @@ def save_and_return_json(url, filename, token=None):
             raise TooManyRequestsError
     else:
         logger("tokenが存在しないため、公式サイトへのアクセスです", level="debug")
-        response = requests.get(url)
+        response = requests.get(f"{url}.json")
     data = response.json()
     with open(f"api_log/{filename}.json", "w", encoding="UTF-8_sig") as a:
         json.dump(data, a, ensure_ascii=False)
@@ -62,8 +62,8 @@ def chunirec():
 def official(game):
     """maimai/オンゲキの公式サイトからJSONファイルを取得し、辞書を返します。
     引数は『ongeki』『maimai』のどちらかです。"""
-    if is_json_not_exists_or_outdated(f"{game}_official.json"):
-        json_data = save_and_return_json(URL_ONGEKI if game == "ongeki" else URL_MAIMAI, game)
+    if is_json_not_exists_or_outdated(f"{game}"):
+        json_data = save_and_return_json(URL_ONGEKI.replace(".json", "") if game == "ongeki" else URL_MAIMAI.replace(".json", ""), game)
     else:
         with open(f"api_log/{game}.json", "r", encoding="UTF-8_sig") as a:
             json_data = json.load(a)
