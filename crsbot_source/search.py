@@ -141,7 +141,7 @@ def search_ongeki(level=None,
         # レベル
         if level:
             music_level_mas = float(music["lev_mas"].replace("+", ".5")) if difficulty in ("b", "m") else None
-            music_level_exp = float(music["lev_exp"].replace("+", ".5")) if difficulty in ("b", "e") else None
+            music_level_exp = float(music["lev_exc"].replace("+", ".5")) if difficulty in ("b", "e") else None
             if is_value_invalid(level, music_level_mas, level_range) and is_value_invalid(level, music_level_exp, level_range):
                 continue
 
