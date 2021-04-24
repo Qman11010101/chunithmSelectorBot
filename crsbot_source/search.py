@@ -1,3 +1,5 @@
+from mojimoji import zen_to_han as z2h
+
 from .consts import MAX_MUSICS
 from .get_json import chunirec, official
 from .log import logger
@@ -83,12 +85,12 @@ def search_chunirec(
 
         # カテゴリ
         if category:
-            if not category.lower() in music["meta"]["genre"].lower():
+            if not category.lower() in z2h(music["meta"]["genre"], kana=False).lower():
                 continue
 
         # アーティスト
         if artist:
-            if not artist.lower() in music["meta"]["artist"].lower():
+            if not artist.lower() in z2h(music["meta"]["artist"], kana=False).lower():
                 continue
 
         # ノーツ数
@@ -132,8 +134,8 @@ def search_ongeki(level=None,
         # 1つ1つの要素に対して判定をしていき、Falseが出た時点でcontinueして次へ行く
         # 全部通ったらtemp_listにappendする
 
-        # WE除外
-        if music["category"] == "worlds_end":  # 実際に実装されて違ったら書き直す
+        # LUNATIC/BONUS除外
+        if music["lunatic"] == "1" or music["bonus"] == "1":
             continue
 
         # レベル
@@ -145,12 +147,12 @@ def search_ongeki(level=None,
 
         # カテゴリ
         if category:
-            if music["category"] != category:  # categoryの方が扱いやすいのでそっちにする
+            if not category.lower() in z2h(music["category"], kana=False).lower():  # categoryの方が扱いやすいのでそっちにする
                 continue
 
         # アーティスト
         if artist:
-            if music["artist"] != artist:
+            if not artist.lower() in z2h(music["artist"], kana=False).lower():
                 continue
 
         temp_list.append(music)
