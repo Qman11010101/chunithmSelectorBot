@@ -1,6 +1,5 @@
 from mojimoji import zen_to_han as z2h
 
-from .consts import MAX_MUSICS
 from .get_json import chunirec, official
 from .log import logger
 
