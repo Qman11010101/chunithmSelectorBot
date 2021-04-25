@@ -10,6 +10,13 @@ from .exceptions import TooManyRequestsError
 from .log import logger
 from .search import search_chunirec, search_ongeki
 
+# Embed定型文
+UNFOUND = discord.Embed(title="Unfound", description="条件に合致する楽曲が見つかりませんでした。", color=0x0000ff)
+INVALID_PARAM = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。\n**HINT**: 余計な『+』や『:』がついたり、スペースをつけ忘れたりしていませんか？", color=0xff0000)
+UNKNOWN_ERROR = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
+CHANNEL_SPECIFY = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+TOO_MANY_REQ = discord.Embed(title="Error", description="一時的にリクエスト過多になっています。10分ほど時間を置いて、再度お試しください。", color=0xff0000)
+
 
 def command_parser(command):
     # 便宜上、各要素を長さ2のリストにしている
@@ -59,7 +66,7 @@ class ChunithmSelector(commands.Cog):
     @commands.command()
     async def random(self, ctx, *, arg=""):
         if ctx.message.channel.name != CHANNEL_NAME:
-            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            embed_mes = CHANNEL_SPECIFY
             await ctx.send(embed=embed_mes)
             return
         logger(f"【{ctx.guild.name}】{ctx.author.name}: {CMDPREF}random {arg}")
@@ -93,13 +100,13 @@ class ChunithmSelector(commands.Cog):
                     logger(f"・『{title}』")
             else:
                 logger(f"条件に合致する楽曲はありませんでした")
-                embed_mes = discord.Embed(title="Unfound", description="条件に合致する楽曲が見つかりませんでした。", color=0x0000ff)
+                embed_mes = UNFOUND
         except TooManyRequestsError:
-            embed_mes = discord.Embed(title="Error", description="一時的にリクエスト過多になっています。10分ほど時間を置いて、再度お試しください。", color=0xff0000)
+            embed_mes = TOO_MANY_REQ
         except (TypeError, ValueError):
-            embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。\n**HINT**: 余計な『+』や『:』がついたり、スペースをつけ忘れたりしていませんか？", color=0xff0000)
+            embed_mes = INVALID_PARAM
         except Exception as e:
-            embed_mes = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
+            embed_mes = UNKNOWN_ERROR
             logger("内部エラーが発生しました", level="error")
             logger(traceback.format_exc(), level="error")
         finally:
@@ -108,7 +115,7 @@ class ChunithmSelector(commands.Cog):
     @commands.command()
     async def search(self, ctx, *, arg=""):
         if ctx.message.channel.name != CHANNEL_NAME:
-            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            embed_mes = CHANNEL_SPECIFY
             await ctx.send(embed=embed_mes)
             return
         if not arg:
@@ -136,13 +143,13 @@ class ChunithmSelector(commands.Cog):
                     embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {float(diff_e)} / MAS: {float(diff_m)}\n**BPM**: {bpm}\n**NOTES** EXP: {notes_e} / MAS: {notes_m}", inline=False)
                     logger(f"・『{title}』")
             else:
-                embed_mes = discord.Embed(title="Unfound", description="条件に合致する楽曲が見つかりませんでした。", color=0x0000ff)
+                embed_mes = UNFOUND
         except TooManyRequestsError:
-            embed_mes = discord.Embed(title="Error", description="一時的にリクエスト過多になっています。10分ほど時間を置いて、再度お試しください。", color=0xff0000)
+            embed_mes = TOO_MANY_REQ
         except (TypeError, ValueError):
-            embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。\n**HINT**: 余計な『+』や『:』がついたり、スペースをつけ忘れたりしていませんか？", color=0xff0000)
+            embed_mes = INVALID_PARAM
         except Exception as e:
-            embed_mes = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
+            embed_mes = UNKNOWN_ERROR
             logger(traceback.format_exc(), level="error")
         finally:
             await ctx.reply(embed=embed_mes)
@@ -150,7 +157,7 @@ class ChunithmSelector(commands.Cog):
     @commands.command()
     async def help(self, ctx):
         if ctx.message.channel.name != CHANNEL_NAME:
-            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            embed_mes = CHANNEL_SPECIFY
             await ctx.send(embed=embed_mes)
             return
         await ctx.send(HELPMES)
@@ -162,7 +169,7 @@ class OngekiSelector(commands.Cog):
     @commands.command(aliases=["hgeki"])
     async def help_ongeki(self, ctx):
         if ctx.message.channel.name != CHANNEL_NAME:
-            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            embed_mes = CHANNEL_SPECIFY
             await ctx.send(embed=embed_mes)
             return
         await ctx.send(HELPMES_ONGEKI)
@@ -170,7 +177,7 @@ class OngekiSelector(commands.Cog):
     @commands.command(aliases=["rgeki"])
     async def random_ongeki(self, ctx, *, arg=""):
         if ctx.message.channel.name != CHANNEL_NAME:
-            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            embed_mes = CHANNEL_SPECIFY
             await ctx.send(embed=embed_mes)
             return
         logger(f"【{ctx.guild.name}】{ctx.author.name}: {CMDPREF}random_ongeki {arg}")
@@ -197,15 +204,15 @@ class OngekiSelector(commands.Cog):
                     category = data[2]
                     diff_e = data[3]
                     diff_m = data[4]
-                    embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {diff_e} / MAS: {diff_m}", inline=False)
+                    embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**LEVEL** EXP: {diff_e} / MAS: {diff_m}", inline=False)
                     logger(f"・『{title}』")
             else:
                 logger(f"条件に合致する楽曲はありませんでした")
-                embed_mes = discord.Embed(title="Unfound", description="条件に合致する楽曲が見つかりませんでした。", color=0x0000ff)
+                embed_mes = UNFOUND
         except (TypeError, ValueError):
-            embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。\n**HINT**: 余計な『+』や『:』がついたり、スペースをつけ忘れたりしていませんか？", color=0xff0000)
+            embed_mes = INVALID_PARAM
         except Exception as e:
-            embed_mes = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
+            embed_mes = UNKNOWN_ERROR
             logger("内部エラーが発生しました", level="error")
             logger(traceback.format_exc(), level="error")
         finally:
@@ -214,7 +221,7 @@ class OngekiSelector(commands.Cog):
     @commands.command(aliases=["sgeki"])
     async def search_ongeki(self, ctx, *, arg=""):
         if ctx.message.channel.name != CHANNEL_NAME:
-            embed_mes = discord.Embed(title="Error", description=f"コマンドは『{CHANNEL_NAME}』チャンネルで実行してください。", color=0xff0000)
+            embed_mes = CHANNEL_SPECIFY
             await ctx.send(embed=embed_mes)
             return
         logger(f"【{ctx.guild.name}】{ctx.author.name}: {CMDPREF}search_ongeki {arg}")
@@ -233,15 +240,15 @@ class OngekiSelector(commands.Cog):
                     category = data[2]
                     diff_e = data[3]
                     diff_m = data[4]
-                    embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**CONST** EXP: {diff_e} / MAS: {diff_m}", inline=False)
+                    embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**LEVEL** EXP: {diff_e} / MAS: {diff_m}", inline=False)
                     logger(f"・『{title}』")
             else:
                 logger(f"条件に合致する楽曲はありませんでした")
-                embed_mes = discord.Embed(title="Unfound", description="条件に合致する楽曲が見つかりませんでした。", color=0x0000ff)
+                embed_mes = UNFOUND
         except (TypeError, ValueError):
-            embed_mes = discord.Embed(title="Error", description="パラメータの形式が正しくありません。もう一度確認してください。\n**HINT**: 余計な『+』や『:』がついたり、スペースをつけ忘れたりしていませんか？", color=0xff0000)
+            embed_mes = INVALID_PARAM
         except Exception as e:
-            embed_mes = discord.Embed(title="Error", description="不明なエラーが発生しました。botの管理者に連絡してください。", color=0xff0000)
+            embed_mes = UNKNOWN_ERROR
             logger("内部エラーが発生しました", level="error")
             logger(traceback.format_exc(), level="error")
         finally:
