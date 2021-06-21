@@ -26,16 +26,14 @@ def is_json_not_exists_or_outdated(filename):
         logger(f"{filename}.jsonが存在していません")
     return NOT_EXISTS or OUTDATED
 
-def save_and_return_json(url, filename, token=None):
+def save_and_return_json(url, filename):
     logger(f"{url}を{filename}.jsonとして取得します")
-    if token:
-        params = {"token": token}
-        response = requests.get(url, params=params)
-        if response.status_code == 429:
+    if filename == "chunirec":
+        response = requests.get(f"{url}.json")
+        if response.status_code == 429: # 動作する？
             logger("chunirecから429エラーを受け取りました", "error")
             raise TooManyRequestsError
     else:
-        logger("tokenが存在しないため、公式サイトへのアクセスです", level="debug")
         response = requests.get(f"{url}.json")
     data = response.json()
     with open(f"api_log/{filename}.json", "w", encoding="UTF-8_sig") as a:
@@ -52,7 +50,7 @@ def chunirec():
         TooManyRequestsError: リクエストの量が多すぎて429を返された際に発生します。
     """
     if is_json_not_exists_or_outdated("chunirec"):
-        json_data = save_and_return_json(URL_chunirec, "chunirec", token=CHUNIREC_TOKEN)
+        json_data = save_and_return_json(URL_chunirec, "chunirec")
     else:
         with open(f"api_log/chunirec.json", "r", encoding="UTF-8_sig") as a:
             json_data = json.load(a)

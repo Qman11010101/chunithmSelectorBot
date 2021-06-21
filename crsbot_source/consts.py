@@ -4,7 +4,7 @@ with open("setting.json", "r", encoding="UTF-8_sig") as s:
     setting = json.load(s)
 
 # URL
-URL_chunirec = "https://api.chunirec.net/1.3/music/showall.json"
+URL_chunirec = "https://chunirec-wrap.qmc.workers.dev/"
 
 URL_ONGEKI = "https://ongeki.sega.jp/assets/json/music/music.json"
 URL_MAIMAI = "https://maimai.sega.jp/data/DXsongs.json"
