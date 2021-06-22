@@ -30,7 +30,6 @@ APP_VERSION = "2.0"
 CHANNEL_NAME = "選曲bot"
 
 # ヘルプメッセージ
-
 DECLARATION_NAME = f"**CHUNITHM Random Selector bot v{APP_VERSION}** by キューマン・エノビクト"
 
 HELPMES = f"""
