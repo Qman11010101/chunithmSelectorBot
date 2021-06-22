@@ -32,7 +32,7 @@ CHANNEL_NAME = "選曲bot"
 # ヘルプメッセージ
 DECLARATION_NAME = f"**CHUNITHM Random Selector bot v{APP_VERSION}** by キューマン・エノビクト"
 
-HELPMES = f"""
+HELPMES_CHUNITHM = f"""
 {DECLARATION_NAME}
 
 【コマンド文字列】
