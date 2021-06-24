@@ -162,7 +162,7 @@ class ChunithmSelector(commands.Cog):
             return
         await ctx.send(HELPMES_CHUNITHM)
 
-class maimaiSelector(commands.Cog):
+class MaimaiSelector(commands.Cog):
     pass
 
 class OngekiSelector(commands.Cog):
