@@ -59,6 +59,8 @@ def ongeki_parser(m):
     diff_m = m["lev_mas"]
     return [title, artist, category, diff_e, diff_m]
 
+# CHUNITHM / maimaiでらっくす / オンゲキ の Cog
+
 class ChunithmSelector(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -253,3 +255,7 @@ class OngekiSelector(commands.Cog):
             logger(traceback.format_exc(), level="error")
         finally:
             await ctx.reply(embed=embed_mes)
+    
+    # WACCA / Arcaea / Phigros の Cog (予定)
+
+
