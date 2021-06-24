@@ -63,7 +63,7 @@ class ChunithmSelector(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=["random_chunithm", "runi"])
     async def random(self, ctx, *, arg=""):
         if ctx.message.channel.name != CHANNEL_NAME:
             embed_mes = CHANNEL_SPECIFY
@@ -112,7 +112,7 @@ class ChunithmSelector(commands.Cog):
         finally:
             await ctx.reply(embed=embed_mes)
 
-    @commands.command()
+    @commands.command(aliases=["search_chunithm", "suni"])
     async def search(self, ctx, *, arg=""):
         if ctx.message.channel.name != CHANNEL_NAME:
             embed_mes = CHANNEL_SPECIFY
@@ -154,7 +154,7 @@ class ChunithmSelector(commands.Cog):
         finally:
             await ctx.reply(embed=embed_mes)
 
-    @commands.command()
+    @commands.command(aliases=["help_chunithm", "huni"])
     async def help(self, ctx):
         if ctx.message.channel.name != CHANNEL_NAME:
             embed_mes = CHANNEL_SPECIFY
