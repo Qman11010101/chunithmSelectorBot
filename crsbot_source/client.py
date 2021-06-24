@@ -256,6 +256,13 @@ class OngekiSelector(commands.Cog):
         finally:
             await ctx.reply(embed=embed_mes)
     
-    # WACCA / Arcaea / Phigros の Cog (予定)
+# WACCA / Arcaea / Phigros の Cog (予定)
 
+class WaccaSelector(commands.Cog):
+    pass
 
+class ArcaeaSelector(commands.Cog):
+    pass
+
+class PhigrosSelector(commands.Cog):
+    pass
