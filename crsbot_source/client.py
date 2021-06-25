@@ -255,11 +255,21 @@ class OngekiSelector(commands.Cog):
             logger(traceback.format_exc(), level="error")
         finally:
             await ctx.reply(embed=embed_mes)
-    
+
 # WACCA / Arcaea / Phigros の Cog (予定)
 
 class WaccaSelector(commands.Cog):
-    pass
+    @commands.command(aliases=["hwacca"])
+    async def help_wacca(self, ctx):
+        pass
+
+    @commands.command(aliases=["rwacca"])
+    async def random_wacca(self, ctx, *, arg=""):
+        pass
+
+    @commands.command(aliases=["swacca"])
+    async def search_wacca(self, ctx, *, arg=""):
+        pass
 
 class ArcaeaSelector(commands.Cog):
     pass
