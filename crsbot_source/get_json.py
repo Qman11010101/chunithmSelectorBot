@@ -27,6 +27,7 @@ def is_json_not_exists_or_outdated(filename):
 
 def save_and_return_json(url, filename):
     logger(f"{url}を{filename}.jsonとして取得します")
+    url = url.replace(".json", "") # エンドポイント名に「.json」が入ってても平気になった
     # chunirecエンドポイント変更により不要になったコード
     # if filename == "chunirec":
     #     response = requests.get(f"{url}.json")
@@ -36,10 +37,12 @@ def save_and_return_json(url, filename):
     # else:
     #     response = requests.get(f"{url}.json")
     response = requests.get(f"{url}.json")
-    data = response.json()
+    data = response.text
+    if data[0] == "\ufeff":
+        data = data[1:]
     with open(f"api_log/{filename}.json", "w", encoding="UTF-8_sig") as a:
-        json.dump(data, a, ensure_ascii=False)
-    return data
+        a.write(data)
+    return json.loads(data)
 
 def chunirec():
     """chunirecからJSONファイルを取得し、辞書を返します。\n
