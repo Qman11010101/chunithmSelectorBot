@@ -27,13 +27,15 @@ def is_json_not_exists_or_outdated(filename):
 
 def save_and_return_json(url, filename):
     logger(f"{url}を{filename}.jsonとして取得します")
-    if filename == "chunirec":
-        response = requests.get(f"{url}.json")
-        if response.status_code == 429: # 動作する？
-            logger("chunirecから429エラーを受け取りました", "error")
-            raise TooManyRequestsError
-    else:
-        response = requests.get(f"{url}.json")
+    # chunirecエンドポイント変更により不要になったコード
+    # if filename == "chunirec":
+    #     response = requests.get(f"{url}.json")
+    #     if response.status_code == 429: # 動作する？
+    #         logger("chunirecから429エラーを受け取りました", "error")
+    #         raise TooManyRequestsError
+    # else:
+    #     response = requests.get(f"{url}.json")
+    response = requests.get(f"{url}.json")
     data = response.json()
     with open(f"api_log/{filename}.json", "w", encoding="UTF-8_sig") as a:
         json.dump(data, a, ensure_ascii=False)
