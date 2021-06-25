@@ -261,15 +261,24 @@ class OngekiSelector(commands.Cog):
 class WaccaSelector(commands.Cog):
     @commands.command(aliases=["hwacca"])
     async def help_wacca(self, ctx):
-        pass
+        if ctx.message.channel.name != CHANNEL_NAME:
+            embed_mes = CHANNEL_SPECIFY
+            await ctx.send(embed=embed_mes)
+            return
 
     @commands.command(aliases=["rwacca"])
     async def random_wacca(self, ctx, *, arg=""):
-        pass
+        if ctx.message.channel.name != CHANNEL_NAME:
+            embed_mes = CHANNEL_SPECIFY
+            await ctx.send(embed=embed_mes)
+            return
 
     @commands.command(aliases=["swacca"])
     async def search_wacca(self, ctx, *, arg=""):
-        pass
+        if ctx.message.channel.name != CHANNEL_NAME:
+            embed_mes = CHANNEL_SPECIFY
+            await ctx.send(embed=embed_mes)
+            return
 
 class ArcaeaSelector(commands.Cog):
     pass
