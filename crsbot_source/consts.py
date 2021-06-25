@@ -98,6 +98,7 @@ HELPMES_CHUNITHM = f"""
 
 HELPMES_ONGEKI = f"""
 {DECLARATION_NAME}
+**オンゲキ選曲機能**
 
 【コマンド文字列】
 `{CMDPREF}random_ongeki [曲数] [レベル(:high/low)] [ジャンル] [アーティスト] [難易度]` (`{CMDPREF}rgeki`でも可)
@@ -146,10 +147,11 @@ HELPMES_ONGEKI = f"""
 
 HELPMES_WACCA = f"""
 {DECLARATION_NAME}
+**WACCA選曲機能**
 
 【コマンド文字列】
-`{CMDPREF}random [曲数] [レベル(:high/low)] [ジャンル] [アーティスト] [難易度]`
-`{CMDPREF}search [レベル(:high/low)] [ジャンル] [アーティスト] [難易度]`
+`{CMDPREF}random_wacca [曲数] [レベル(:high/low)] [ジャンル] [アーティスト] [難易度]` (`{CMDPREF}rwacca`でも可)
+`{CMDPREF}search_wacca [レベル(:high/low)] [ジャンル] [アーティスト] [難易度]` (`{CMDPREF}swacca`でも可)
 {HIGHLOW}
 
 【パラメータ】
