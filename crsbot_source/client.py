@@ -272,6 +272,7 @@ class WaccaSelector(commands.Cog):
             embed_mes = CHANNEL_SPECIFY
             await ctx.send(embed=embed_mes)
             return
+        logger(f"【{ctx.guild.name}】{ctx.author.name}: {CMDPREF}random_wacca {arg}")
 
     @commands.command(aliases=["swacca"])
     async def search_wacca(self, ctx, *, arg=""):
@@ -279,6 +280,7 @@ class WaccaSelector(commands.Cog):
             embed_mes = CHANNEL_SPECIFY
             await ctx.send(embed=embed_mes)
             return
+        logger(f"【{ctx.guild.name}】{ctx.author.name}: {CMDPREF}search_wacca {arg}")
 
 class ArcaeaSelector(commands.Cog):
     pass
