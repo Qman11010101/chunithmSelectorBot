@@ -5,7 +5,7 @@ import discord
 import mojimoji
 from discord.ext import commands
 
-from .consts import CHANNEL_NAME, CMDPREF, HELPMES_CHUNITHM, HELPMES_ONGEKI, MAX_MUSICS
+from .consts import CHANNEL_NAME, CMDPREF, HELPMES_CHUNITHM, HELPMES_ONGEKI, HELPMES_WACCA, MAX_MUSICS
 from .exceptions import TooManyRequestsError
 from .log import logger
 from .search import search_chunirec, search_ongeki
@@ -265,6 +265,7 @@ class WaccaSelector(commands.Cog):
             embed_mes = CHANNEL_SPECIFY
             await ctx.send(embed=embed_mes)
             return
+        await ctx.send(HELPMES_WACCA)
 
     @commands.command(aliases=["rwacca"])
     async def random_wacca(self, ctx, *, arg=""):
