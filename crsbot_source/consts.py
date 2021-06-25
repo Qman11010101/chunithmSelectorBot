@@ -33,7 +33,7 @@ APP_VERSION = "2.0"
 CHANNEL_NAME = "選曲bot"
 
 # ヘルプメッセージ
-DECLARATION_NAME = f"**CHUNITHM Random Selector bot v{APP_VERSION}** by キューマン・エノビクト"
+DECLARATION_NAME = f"**CHUNITHM Random Selector bot v{APP_VERSION}**"
 HIGHLOW = f"""※`(:high/low)`がついているパラメータは、後ろに『:high』もしくは『:low』を付け足すことで『以上』『以下』を表すことができます。
 `:up/:down`や`:big/:small`でも可能です。"""
 
