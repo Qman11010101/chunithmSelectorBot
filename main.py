@@ -34,6 +34,7 @@ bot = commands.Bot(
 )
 bot.add_cog(client.ChunithmSelector(bot))
 bot.add_cog(client.OngekiSelector(bot))
+bot.add_cog(client.WaccaSelector(bot))
 
 logger("botを起動します", level="debug")
 bot.run(DISCORD_TOKEN)

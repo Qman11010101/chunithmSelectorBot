@@ -1,6 +1,6 @@
 from mojimoji import zen_to_han as z2h
 
-from .get_json import chunirec, official
+from .get_json import chunirec, official, wacca
 from .log import logger
 
 
@@ -152,6 +152,55 @@ def search_ongeki(level=None,
         # アーティスト
         if artist:
             if not artist.lower() in z2h(music["artist"], kana=False).lower():
+                continue
+
+        temp_list.append(music)
+
+    return temp_list
+
+def search_wacca(level=None,
+                 level_range=None,
+                 category=None,
+                 artist=None,
+                 difficulty="default"):
+    # "n+"を"n.5"に変更し数値化
+    logger(f"レベル指定: {level}", level="debug")
+    if level:
+        level = float(level.replace("+", ".5"))
+
+    music_json = wacca()
+    temp_list = []
+
+    # 難易度をバリデーション
+    if difficulty:
+        if difficulty[0].lower() not in ("e", "i", "b"):
+            difficulty = "b"
+    else:
+        difficulty = "b"
+
+    for music in music_json:
+        # 1つ1つの要素に対して判定をしていき、Falseが出た時点でcontinueして次へ行く
+        # 全部通ったらtemp_listにappendする
+
+        # レベル
+        if level:
+            music_level_exp = float(music["level"]["exp"].replace("+", ".5")) if difficulty in ("b", "e") else None
+            if music["meta"]["has_inferno"]:
+                music_level_inf = float(music["level"]["inf"].replace("+", ".5")) if difficulty in ("b", "i") else None
+                if is_value_invalid(level, music_level_inf, level_range) and is_value_invalid(level, music_level_exp, level_range):
+                    continue
+            else:
+                if is_value_invalid(level, music_level_exp, level_range):
+                    continue
+
+        # カテゴリ
+        if category:
+            if not category.lower() in z2h(music["meta"]["category"], kana=False).lower():
+                continue
+
+        # アーティスト
+        if artist:
+            if not artist.lower() in z2h(music["meta"]["artist"], kana=False).lower():
                 continue
 
         temp_list.append(music)
