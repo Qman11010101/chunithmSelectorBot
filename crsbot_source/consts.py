@@ -93,7 +93,9 @@ HELPMES_CHUNITHM = f"""
 - WORLD'S ENDには対応していません。
 - 一部の値が未登録になっている場合があります。
 
-**オンゲキ楽曲も検索可能です！`{CMDPREF}help_ongeki`もしくは`{CMDPREF}hgeki`でヘルプを呼び出せます！**
+他、以下の楽曲の検索機能があります。
+- オンゲキ: `{CMDPREF}help_ongeki`
+- WACCA: `{CMDPREF}help_wacca`
 """
 
 HELPMES_ONGEKI = f"""
@@ -185,4 +187,7 @@ HELPMES_WACCA = f"""
 
 【注意点】
 - ジャンルは1つのみ指定可能です。
+
+【不具合】
+- 『オリジナル』を指定すると『TANO\\*C（オリジナル）』も同時に検索されてしまいます。
 """
