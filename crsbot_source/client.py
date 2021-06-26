@@ -326,6 +326,34 @@ class WaccaSelector(commands.Cog):
             await ctx.send(embed=embed_mes)
             return
         logger(f"【{ctx.guild.name}】{ctx.author.name}: {CMDPREF}search_wacca {arg}")
+        c = command_parser(arg)
+        try:
+            res = search_wacca(level=c[0][0], level_range=c[0][1], category=c[1][0], artist=c[2][0], difficulty=c[3][0])
+            if (lr := len(res)) > MAX_MUSICS:
+                embed_mes = discord.Embed(title="Error", description=f"見つかった楽曲数({lr}曲)が{MAX_MUSICS}曲を超えるため、表示できません。", color=0xff0000)
+            elif lr > 0:
+                logger(f"以下の{lr}曲が見つかりました:")
+                embed_mes = discord.Embed(title="検索結果", description=f"{lr}曲見つかりました。", color=0x00ff00)
+                for m in res:
+                    data = wacca_parser(m)
+                    title = data[0]
+                    artist = data[1]
+                    category = data[2]
+                    diff_e = data[3]
+                    diff_i = data[4]
+                    embed_mes.add_field(name=title, value=f"**ARTIST**: {artist}\n**GENRE**: {category}\n**LEVEL** EXP: {diff_e}{diff_i}", inline=False)
+                    logger(f"・『{title}』")
+            else:
+                logger(f"条件に合致する楽曲はありませんでした")
+                embed_mes = UNFOUND
+        except (TypeError, ValueError):
+            embed_mes = INVALID_PARAM
+        except Exception as e:
+            embed_mes = UNKNOWN_ERROR
+            logger("内部エラーが発生しました", level="error")
+            logger(traceback.format_exc(), level="error")
+        finally:
+            await ctx.reply(embed=embed_mes)
 
 class ArcaeaSelector(commands.Cog):
     pass
