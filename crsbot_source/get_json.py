@@ -4,7 +4,7 @@ import time
 
 import requests
 
-from .consts import CHUNIREC_TOKEN, URL_MAIMAI, URL_ONGEKI, URL_chunirec
+from .consts import CHUNIREC_TOKEN, URL_MAIMAI, URL_ONGEKI, URL_chunirec, URL_WACCA
 from .exceptions import TooManyRequestsError
 from .log import logger
 
@@ -68,6 +68,15 @@ def official(game):
         json_data = save_and_return_json(URL_ONGEKI.replace(".json", "") if game == "ongeki" else URL_MAIMAI.replace(".json", ""), game)
     else:
         with open(f"api_log/{game}.json", "r", encoding="UTF-8_sig") as a:
+            json_data = json.load(a)
+
+    return json_data
+
+def wacca():
+    if is_json_not_exists_or_outdated("wacca"):
+        json_data = save_and_return_json(URL_WACCA, "wacca")
+    else:
+        with open("api_log/wacca.json", "r", encoding="UTF-8_sig") as a:
             json_data = json.load(a)
 
     return json_data
