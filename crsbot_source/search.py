@@ -185,7 +185,7 @@ def search_wacca(level=None,
         # レベル
         if level:
             music_level_exp = float(music["level"]["exp"].replace("+", ".5")) if difficulty in ("b", "e") else None
-            if music["meta"]["has_inf"]:
+            if music["meta"]["has_inferno"]:
                 music_level_inf = float(music["level"]["inf"].replace("+", ".5")) if difficulty in ("b", "i") else None
                 if is_value_invalid(level, music_level_inf, level_range) and is_value_invalid(level, music_level_exp, level_range):
                     continue
