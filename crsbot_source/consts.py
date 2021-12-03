@@ -1,7 +1,32 @@
 import json
+import os
+from os import environ as env
+from distutils.util import strtobool
 
-with open("setting.json", "r", encoding="UTF-8_sig") as s:
-    setting = json.load(s)
+if os.path.isfile("setting.json"):
+    with open("setting.json", "r", encoding="UTF-8_sig") as s:
+        setting = json.load(s)
+else:
+    setting = {
+        "token": {
+            "discord": env["discord_token"],
+            "chunirec": env["chunirec_token"]
+        },
+        "logging": {
+            "logging": strtobool(env["logging"]),
+            "loglevel_stdio": env["loglevel_stdio"],
+            "loglevel_file": env["loglevel_file"],
+            "log_filename": env["log_filename"]
+        },
+        "misc": {
+            "channel_id": int(env["channel_id"]),
+            "timezone": env["timezone"],
+            "api_lifetime": int(env["api_lifetime"]),
+            "max_musics": int(env["max_musics"]),
+            "command_prefix": env["command_prefix"]
+        }
+    }
+
 
 # URL
 URL_chunirec = "https://reiwa.f5.si/chunirec_all.json"
@@ -29,7 +54,7 @@ log_filename = setting["logging"]["log_filename"]
 # その他
 MAX_MUSICS = setting["misc"]["max_musics"]
 CMDPREF = setting["misc"]["command_prefix"]
-APP_VERSION = "3.0b"
+APP_VERSION = "3.0"
 CHANNEL_NAME = "選曲bot"
 
 # ヘルプメッセージ

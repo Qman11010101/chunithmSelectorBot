@@ -44,8 +44,8 @@ def chunirec_parser(m, filler="未登録"):
     title = m["meta"]["title"]
     artist = m["meta"]["artist"]
     category = m["meta"]["genre"]
-    diff_e = m["data"]["EXP"]["const"] if int(m["data"]["EXP"]["const"]) != 0 else filler
-    diff_m = m["data"]["MAS"]["const"] if int(m["data"]["MAS"]["const"]) != 0 else filler
+    diff_e = m["data"]["EXP"]["const"] if int(m["data"]["EXP"]["const"]) != 0 else m["data"]["EXP"]["level"] if int(m["data"]["EXP"]["level"]) != 0 else filler
+    diff_m = m["data"]["MAS"]["const"] if int(m["data"]["MAS"]["const"]) != 0 else m["data"]["MAS"]["level"] if int(m["data"]["MAS"]["level"]) != 0 else filler
     bpm = m["meta"]["bpm"] if int(m["meta"]["bpm"]) != 0 else filler
     notes_e = m["data"]["EXP"]["maxcombo"] if int(m["data"]["EXP"]["maxcombo"]) != 0 else filler
     notes_m = m["data"]["MAS"]["maxcombo"] if int(m["data"]["MAS"]["maxcombo"]) != 0 else filler
@@ -96,6 +96,7 @@ class ChunithmSelector(commands.Cog):
             if (lr := len(r)) > 0:
                 logger(f"以下の{lr}曲が選ばれました:")
                 embed_mes = discord.Embed(title="選曲結果", description=f"以下の{lr}曲が選ばれました", color=0x00ff00)
+                print(r)
                 for m in r:
                     data = chunirec_parser(m)
                     title = data[0]
@@ -140,6 +141,7 @@ class ChunithmSelector(commands.Cog):
             elif lr > 0:
                 logger(f"以下の{lr}曲が見つかりました:")
                 embed_mes = discord.Embed(title="検索結果", description=f"{lr}曲見つかりました。", color=0x00ff00)
+                print(res)
                 for m in res:
                     data = chunirec_parser(m)
                     title = data[0]
