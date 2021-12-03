@@ -41,9 +41,9 @@ def command_parser(command):
     return cl
 
 def chunirec_parser(m, filler="未登録"):
-    title = m["meta"]["title"]
-    artist = m["meta"]["artist"]
-    category = m["meta"]["genre"]
+    title = m["meta"]["title"].replace("*", "\\*").replace("_", "\\_")
+    artist = m["meta"]["artist"].replace("*", "\\*").replace("_", "\\_")
+    category = m["meta"]["genre"].replace("*", "\\*").replace("_", "\\_")
     diff_e = m["data"]["EXP"]["const"] if int(m["data"]["EXP"]["const"]) != 0 else m["data"]["EXP"]["level"] if int(m["data"]["EXP"]["level"]) != 0 else filler
     diff_m = m["data"]["MAS"]["const"] if int(m["data"]["MAS"]["const"]) != 0 else m["data"]["MAS"]["level"] if int(m["data"]["MAS"]["level"]) != 0 else filler
     bpm = m["meta"]["bpm"] if int(m["meta"]["bpm"]) != 0 else filler
@@ -52,17 +52,17 @@ def chunirec_parser(m, filler="未登録"):
     return [title, artist, category, diff_e, diff_m, bpm, notes_e, notes_m]
 
 def ongeki_parser(m):
-    title = m["title"]
-    artist = m["artist"]
-    category = m["category"]
+    title = m["title"].replace("*", "\\*").replace("_", "\\_")
+    artist = m["artist"].replace("*", "\\*").replace("_", "\\_")
+    category = m["category"].replace("*", "\\*").replace("_", "\\_")
     diff_e = m["lev_exc"]
     diff_m = m["lev_mas"]
     return [title, artist, category, diff_e, diff_m]
 
 def wacca_parser(m):
-    title = m["meta"]["title"]
-    artist = m["meta"]["artist"]
-    category = m["meta"]["category"]
+    title = m["meta"]["title"].replace("*", "\\*").replace("_", "\\_")
+    artist = m["meta"]["artist"].replace("*", "\\*").replace("_", "\\_")
+    category = m["meta"]["category"].replace("*", "\\*").replace("_", "\\_")
     diff_e = m["level"]["exp"]
     diff_i = " / INF: " + m["level"]["inf"] if m["meta"]["has_inferno"] else ""
     return [title, artist, category, diff_e, diff_i]
