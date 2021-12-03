@@ -11,7 +11,7 @@ from crsbot_source.log import logger
 
 if not os.path.isfile("setting.json"):
     print("エラー: setting.jsonが見つかりません")
-    sys.exit(1)
+    print("環境変数を読み込みます")
 
 logger("chunirec tokenのテストを行います", level="debug")
 test_status = token_test.test_chunirec()
