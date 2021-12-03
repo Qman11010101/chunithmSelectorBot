@@ -15,7 +15,7 @@ def test_chunirec():
     else:
         s_json = {"token": {"chunirec": os.environ["chunirec_token"]}}
     p = {"token": s_json["token"]["chunirec"]}
-    r = requests.get("https://api.chunirec.net/2.0/users/me.json", params=p)
+    r = requests.get("https://api.chunirec.net/2.0/users/show.json", params=p)
     return r.status_code
 
 
