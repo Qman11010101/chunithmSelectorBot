@@ -19,7 +19,7 @@ if test_status != 200:
     if test_status == 429:
         logger("chunirecにおいて、tokenのリクエスト過多により、一時的に使用できなくなっています", "critical")
     else:
-        logger("chunirecのtokenが不正です", "critical")
+        logger(f"chunirecのtokenが不正です! ステータスコード: {test_status}", "critical")
     sys.exit(1)
 logger("tokenは正しく設定されています", level="debug")
 
